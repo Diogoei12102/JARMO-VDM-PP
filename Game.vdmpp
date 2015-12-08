@@ -17,14 +17,14 @@ public Game: ()==> Game
 			currentPlayer := 1; --escolhe aleatoriamente quem começa
 			for x = 0 to 4 do 
 			for y = 0 to 4 do 
-			if x = 0 then		
+			(if x = 0 then		
 			p := new Position(x,y,1)
 			elseif x = 4 then
 			p := new Position(x,y,2)
 			else
 			p := new Position(x,y,0);
 			
-			board := board union {p};
+			board := board union {p};);-- nao sei se isto está dentro do for
 			-- adicionar ao board
 			
 			

@@ -18,7 +18,11 @@ public Position : Pos * Pos * Occupied ==> Position
 		occupied:= o;
 		return self
 	);
-	
+public addValidMoves :ValidMoves ==> Position
+			addValidMoves(moves)==(
+			valid_moves := moves;
+			return self
+			);
 functions
 -- TODO Define functiones here
 traces
