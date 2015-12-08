@@ -1,0 +1,38 @@
+class Game
+types
+public Board = set of Position;
+public CurrentPlayer = nat1;
+values
+
+instance variables
+private board: Board;
+private currentPlayer: CurrentPlayer ;
+operations
+public Game: ()==> Game
+	Game() == (
+	
+		-- temos de criar as posiçoes todas do tabuleiro
+		-- dcl p1: Position := new Position(0,0,1); podiamos arranjar maneira de em vez de 0 1 ou 2 meter mesmo um jogador e era fixe criar estas posiçoes com um for
+			--currentPlayer := MATH.rand(1) + 1; --escolhe aleatoriamente quem começa
+			for x = 0 to 4 do 
+			for y = 0 to 4 do 
+			if x = 0 
+			dcl p: Position := new Position(x,y,1);
+			else 
+			if x = 4
+			p ==> Position := new Position(x,y,2);
+			else
+			p ==> Position := new Position(x,y,0);
+			end
+			end
+			-- adicionar ao board
+			end
+			
+		
+		return self;
+	);
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Game

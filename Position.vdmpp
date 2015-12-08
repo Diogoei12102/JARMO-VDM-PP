@@ -1,12 +1,24 @@
 class Position
 types
--- TODO Define types here
+public Pos = nat;
+public Occupied = nat;
+public ValidMoves = set of Position;
 values
 -- TODO Define values here
 instance variables
--- TODO Define instance variables here
+private posL: Pos;
+private posC: Pos;
+private occupied: Occupied;
+private valid_moves: ValidMoves
 operations
--- TODO Define operations here
+public Position : Pos * Pos * Occupied ==> Position
+	Position(x, y, o) == (
+		posL := x;
+		posC := y;
+		occupied:= o;
+		return self
+	);
+	
 functions
 -- TODO Define functiones here
 traces

@@ -1,4 +1,4 @@
-class Board
+class Player
 types
 -- TODO Define types here
 values
@@ -11,4 +11,4 @@ functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
-end Board
+end Player
