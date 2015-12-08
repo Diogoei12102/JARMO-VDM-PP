@@ -10,23 +10,23 @@ private currentPlayer: CurrentPlayer ;
 operations
 public Game: ()==> Game
 	Game() == (
-	
+			dcl p: Position ;
+			board :={};
 		-- temos de criar as posiçoes todas do tabuleiro
 		-- dcl p1: Position := new Position(0,0,1); podiamos arranjar maneira de em vez de 0 1 ou 2 meter mesmo um jogador e era fixe criar estas posiçoes com um for
-			--currentPlayer := MATH.rand(1) + 1; --escolhe aleatoriamente quem começa
+			currentPlayer := 1; --escolhe aleatoriamente quem começa
 			for x = 0 to 4 do 
 			for y = 0 to 4 do 
-			if x = 0 
-			dcl p: Position := new Position(x,y,1);
-			else 
-			if x = 4
-			p ==> Position := new Position(x,y,2);
+			if x = 0 then		
+			p := new Position(x,y,1)
+			elseif x = 4 then
+			p := new Position(x,y,2)
 			else
-			p ==> Position := new Position(x,y,0);
-			end
-			end
+			p := new Position(x,y,0);
+			
+			board := board union {p};
 			-- adicionar ao board
-			end
+			
 			
 		
 		return self;
