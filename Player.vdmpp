@@ -1,11 +1,21 @@
 class Player
 types
--- TODO Define types here
+public PlayerNumber = nat1; 
+public Score = int;
+
 values
 -- TODO Define values here
 instance variables
--- TODO Define instance variables here
+private number: PlayerNumber;
+private score: Score;
+
 operations
+public Player : PlayerNumber * Score ==> Player
+	Player(num, points) == (
+		number := num;
+		score := points;
+		return self
+	);
 -- TODO Define operations here
 functions
 -- TODO Define functiones here
