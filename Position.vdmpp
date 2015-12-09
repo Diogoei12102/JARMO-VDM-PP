@@ -37,6 +37,17 @@ public getPosL : () ==> Pos
 			return posL;
 			);
 			
+public getPosC : () ==> Pos
+		getPosC() == (
+			return posC;
+			);
+
+public getOccupied : () ==> Occupied
+		getOccupied() == (
+			return occupied;
+			);			
+			
+			
 functions
 -- TODO Define functiones here
 traces

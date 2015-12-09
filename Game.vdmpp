@@ -1,12 +1,12 @@
 class Game
 types
 public Board = set of Position;
-public CurrentPlayer = nat1;
 values
 
 instance variables
 private board: Board;
-private currentPlayer: CurrentPlayer ;
+private currentPlayer: Player;
+private opponent: Player;
 private players: set of nat1;
 
 operations
@@ -73,8 +73,9 @@ public Game: ()==> Game
 								
 		-- temos de criar as posicoes todas do tabuleiro
 		-- dcl p1: Position := new Position(0,0,1); podiamos arranjar maneira de em vez de 0 1 ou 2 meter mesmo um jogador e era fixe criar estas posi�oes com um for
-			currentPlayer := 1; --escolhe aleatoriamente quem comeca
-			players := {1, 2};
+			currentPlayer := new Player(1);
+			opponent := new Player(2); --escolhe aleatoriamente quem comeca
+			players := {currentPlayer, opponent};
 			
 --for x = 0 to 4 do 
 --			for y = 0 to 4 do 
@@ -105,7 +106,12 @@ public changePlayer : () ==> ()
 				changePlayer() == (
 					currentPlayer := iota x in set players & x <> currentPlayer;
 					);
-					
+
+public getCurrentPlayer : () ==>  CurrentPlayer
+        	getCurrentPlayer() == (
+        	return currentPlayer;
+        	);
+        				
 public setBoard : Board ==> ()
         	setBoard(b) == (
         	board := b;
@@ -114,11 +120,31 @@ public setBoard : Board ==> ()
 public isMoveValid : Position * Position ==> bool
 			isMoveValid(pi, pf) == (
 				dcl valid : bool := true;
-					if pf not in set pi.getValidMoves()
-						then valid := false;
+					if (pf not in set pi.getValidMoves())
+						then (valid := false;)
+					else 
+						-- verificar se esta no campo adversario
+						-- verificar se move a sua peca
+						-- verificar se tem uma peca sua na posicao final
+						(valid := true;);	
 					return valid;
 					);
-					
+
+public movePiece : Position * Position ==> ()
+			movePiece(pi, pf) == (
+				if isMoveValid(pi, pf) then (
+						if (pi.getOccupied() = currentPlayer.getNumber()) then
+								(	
+								if (pf.getOccupied() = opponent.getNumber()) then (
+										opponent.addPiecesOut();
+										);
+									pi.setOccupied(0);
+									pf.setOccupied(currentPlayer);
+									);
+		);
+);
+						
+								
 functions
         	
 traces
