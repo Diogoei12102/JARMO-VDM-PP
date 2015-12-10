@@ -21,8 +21,7 @@ public testBoard : () ==> ()
 							assertTrue(board(i).getOccupied() = 0);
 						);
 						
-				);
-				
+				);			
 public testMove : () ==> ()
 			testMove() == (
 			
@@ -31,36 +30,43 @@ public testMove : () ==> ()
 			--nao mover a sua peca
 			--movimento para uma casa ocupada por uma peca do mesmo jogador
 			dcl g: Game := new Game();
-			
 			dcl board: seq of Position := g.getBoard();
 			
-			-- mover para casa vazia
-			
-			assertTrue(g.movePiece(board(1), board(8)));
-			IO`print("Posicao p1: ");
-			IO`print(g.getBoard()(1).getOccupied());
-			assertTrue(board(1).getOccupied() = 0);
-
-			assertTrue(board(8).getOccupied() = 1);	
-			
-		assertTrue(g.movePiece(board(24), board(15)));
-						
-			assertTrue(board(24).getOccupied() = 0);
-			assertTrue(board(15).getOccupied() = 2);
-			
+			-- mover peca jogador 1 para casa vazia
+			IO`print("TESTE MEXER PECA DE JOGADOR 1 PARA UMA CASA VAZIA \n");
+			IO`print("peça mexeu:"); assertTrue(g.movePiece(board(1), board(8)));
+			IO`print("posicao inicial do tabuleiro mudou:");assertTrue(board(1).getOccupied() = 0);
+			IO`print("posiçao final do tabuleiro mudou:");assertTrue(board(8).getOccupied() = 1);	
+			IO`print("jogador mudou para 2:");assertTrue(g.getCurrentPlayer().getNumber() = 2);
+		 
+		 --mover peca jogador 2 para casa vazia
+		  IO`print("TESTE MEXER PECA DE JOGADOR 2 PARA UMA CASA VAZIA \n");
+		  IO`print("peça mexeu:"); assertTrue(g.movePiece(board(24), board(15)));			
+			IO`print("posicao inicial do tabuleiro mudou:");assertTrue(board(24).getOccupied() = 0);
+			IO`print("posiçao final do tabuleiro mudou:");assertTrue(board(15).getOccupied() = 2);
+			IO`print("jogador mudou para 1:");assertTrue(g.getCurrentPlayer().getNumber() = 2);
 			--nao mover a sua peca - primeira casa - board(1) - esta vazia
 			
-				-- posicao inicial vazia
-			assertTrue(g.movePiece(board(1), board(12)));
-			
-			assertTrue(board(1).getOccupied() = 0);
-			assertTrue(board(12).getOccupied() = 0);	
-			
+			-- posicao inicial vazia
+			IO`print("TENTAR MOVER A PARTIR DE UMA POSICAO VAZIA \n");
+			IO`print("peça mexeu:"); assertTrue(g.movePiece(board(1), board(12)));
+			IO`print("posicao inicial do tabuleiro mudou:");assertTrue(board(1).getOccupied() = 0);
+			IO`print("posicao final do tabuleiro mudou:");assertTrue(board(12).getOccupied() = 0);	
+			IO`print("jogador mudou:");assertTrue(g.getCurrentPlayer().getNumber() = 2);-- o jogador nao pode mudar
 			  -- posicao inicial com peca do adversario
-			assertTrue(g.movePiece(board(15), board(24)));
-			
-			assertTrue(board(15).getOccupied() = 2);
-			assertTrue(board(24).getOccupied() = 0);
+			IO`print("TENTAR MOVER PECA ADVERSARIO \n");
+			IO`print("peça mexeu:");assertTrue(g.movePiece(board(15), board(24)));
+			IO`print("posicao inicial do tabuleiro mudou:");assertTrue(board(15).getOccupied() = 2);
+		  IO`print("posicao final do tabuleiro mudou:");assertTrue(board(24).getOccupied() = 0);
+		  IO`print("jogador mudou:");assertTrue(g.getCurrentPlayer().getNumber() = 2);-- o jogador nao pode mudar
+		    -- comer peca
+		  
+		  IO`print("TENTAR COMER PECA ADVERSARIO \n");
+			IO`print("peça mexeu:");assertTrue(g.movePiece(board(4), board(15)));
+			IO`print("posicao inicial do tabuleiro mudou:");assertTrue(board(4).getOccupied() = 0);
+		  IO`print("posicao final do tabuleiro mudou:");assertTrue(board(15).getOccupied() = 1);
+		  IO`print("jogador mudou:");assertTrue(g.getCurrentPlayer().getNumber() = 2);
+		  IO`print("incrementou piecesOut do jogador 2:"); assertTrue(g.getCurrentPlayer().getPiecesOut() = 1);
 				
 );
 

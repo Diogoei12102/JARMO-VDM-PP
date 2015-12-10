@@ -8,8 +8,8 @@ operations
   			IO`print("False expression\n")
   	)
   	else 
-  		IO`print("True expression\n")
-post arg;
+  		IO`print("True expression\n");
+--post arg;
 
 	protected assertEqual: ? * ? ==> ()
 	assertEqual(expected, actual) == 
