@@ -11,7 +11,10 @@ instance variables
 private posL: Pos;
 private posC: Pos;
 private occupied: Occupied;
-private valid_moves: ValidMoves
+private valid_moves: ValidMoves;
+inv posL in set {0,...,4}
+ and posC in set {0,...,4}
+  and occupied in set {0,1,2};
 
 operations
 public Position : Pos * Pos * Occupied ==> Position
@@ -25,28 +28,34 @@ public Position : Pos * Pos * Occupied ==> Position
 public addValidMoves : ValidMoves ==> ()
 			addValidMoves(moves)==(
 			valid_moves := moves;
-			);
+			)
+post valid_moves <> {};
 			
 public getValidMoves : () ==> ValidMoves
 		getValidMoves() == (
 			return valid_moves;
-			);
+			)
+pre valid_moves <> {};
 
 public getPosL : () ==> Pos
 		getPosL() == (
 			return posL;
-			);
+);
 			
 public getPosC : () ==> Pos
 		getPosC() == (
 			return posC;
 			);
 
-public getOccupied : () ==> Occupied
+pure public getOccupied : () ==> Occupied
 		getOccupied() == (
 			return occupied;
 			);			
 			
+public setOccupied : nat ==> ()
+		setOccupied(o) == (
+			occupied := o;
+			);
 			
 functions
 -- TODO Define functiones here
