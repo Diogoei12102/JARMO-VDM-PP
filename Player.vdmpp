@@ -52,6 +52,10 @@ public subPiecesOut : () ==> ()
 		subPiecesOut() == (
 			piecesOut := piecesOut - 1;
 );
+public setScore : nat  ==> ()
+		setScore(sc) == (
+			score := sc;
+);
 -- TODO Define operations here
 functions
 -- TODO Define functiones here
