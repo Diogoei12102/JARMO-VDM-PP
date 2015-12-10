@@ -174,7 +174,7 @@ public restorePiece : Position ==> ()
 pre currentPlayer.getPiecesOut() > 0 
 	and p.getOccupied() = 0;
 		
-public gameEnds : () ==> bool 
+pure public gameEnds : () ==> bool 
 	gameEnds() == (
 		dcl cntP2 : nat := 0;
 		dcl cntP1 : nat := 0;
@@ -222,9 +222,11 @@ public countPoints : () ==> ()
 		opponent.setScore(cntP2);)
 		else
 		(currentPlayer.setScore(cntP2);
-		opponent.setScore(cntP1););
-		
-);
+		opponent.setScore(cntP1););	
+)
+pre gameEnds()
+post currentPlayer.getScore() > 0 or opponent.getScore() > 0;
+
 		
 --The game ends, when any one player has brought all of their remaining archers on the board onto the enemy player's first row. DONE
 --The first player do so will count two points for every archer on the enemy player's first row. 

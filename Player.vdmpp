@@ -56,6 +56,11 @@ public setScore : nat  ==> ()
 		setScore(sc) == (
 			score := sc;
 );
+
+pure public getScore : () ==> nat
+		getScore() == (
+			return score;
+);
 -- TODO Define operations here
 functions
 -- TODO Define functiones here
