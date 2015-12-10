@@ -7,8 +7,9 @@ instance variables
 private board: Board;
 private currentPlayer: Player;
 private opponent: Player;
-private players: set of Player;
+private players: seq of Player;
 
+--FALTA CONTAGEM DE PONTOS
 operations
 public Game: ()==> Game
 	Game() == (
@@ -75,7 +76,7 @@ public Game: ()==> Game
 		-- dcl p1: Position := new Position(0,0,1); podiamos arranjar maneira de em vez de 0 1 ou 2 meter mesmo um jogador e era fixe criar estas posicoes com um for
 			currentPlayer := new Player(1);
 			opponent := new Player(2); --escolhe aleatoriamente quem comeca
-			players := {currentPlayer, opponent};
+			players := [currentPlayer, opponent];
 			
 --for x = 0 to 4 do 
 --			for y = 0 to 4 do 
@@ -93,21 +94,26 @@ public Game: ()==> Game
 )
 post len board = 25 
 		and currentPlayer.getNumber() <> opponent.getNumber() 
-			and players = {currentPlayer,opponent}; 
+			and players = [currentPlayer,opponent]; 
 	
 public getBoard : () ==>  Board
         	getBoard() == (
         	return board;
         	);
 
-public getPlayers : () ==>  set of Player
+public getPlayers : () ==>  seq of Player
         	getPlayers() == (
         	return players;
         	);
         	       		      	
 public changePlayer : () ==> ()
 				changePlayer() == (
-					currentPlayer := iota x in set players & x <> currentPlayer;
+				if currentPlayer.getNumber() = 1 then
+					(currentPlayer := players(2);
+					opponent := players(1);)
+				else 
+				(currentPlayer := players(1);
+					opponent := players(2);)
 )
 pre currentPlayer <> opponent
 post currentPlayer~ <> currentPlayer;
@@ -140,20 +146,22 @@ public isMoveValid : Position * Position ==> bool
 )
 pre pi in set elems board and pf in set elems board;
 
-public movePiece : Position * Position ==> ()
+public movePiece : Position * Position ==> bool
 			movePiece(pi, pf) == (
 				if isMoveValid(pi, pf) then (
-						if (pi.getOccupied() = currentPlayer.getNumber()) then
-								(	
-								if (pf.getOccupied() = opponent.getNumber()) then (
-										opponent.addPiecesOut();
-										);
+						if (pi.getOccupied() = currentPlayer.getNumber()) 
+						then (	
+								if (pf.getOccupied() = opponent.getNumber()) 
+								then (eatPiece();
+								);
 									pi.setOccupied(0);
 									pf.setOccupied(currentPlayer.getNumber());
 									);
+						changePlayer();
+						return true;
 		);
-)
-post board~ <> board;			
+		return false;
+);
 
 public eatPiece : () ==> ()
 	eatPiece() == (
@@ -227,6 +235,15 @@ public countPoints : () ==> ()
 pre gameEnds()
 post currentPlayer.getScore() > 0 or opponent.getScore() > 0;
 
+--jogada sem restorePiece() - escolha arbitraria de um jogador - sera implementada na classe de testes
+public turn : Position * Position ==> () 
+	turn(pi, pf) == (
+		if movePiece(pi,pf)
+			then 
+				changePlayer();
+		if gameEnds()
+		 then countPoints();
+);
 		
 --The game ends, when any one player has brought all of their remaining archers on the board onto the enemy player's first row. DONE
 --The first player do so will count two points for every archer on the enemy player's first row. 

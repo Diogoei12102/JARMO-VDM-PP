@@ -52,6 +52,7 @@ public subPiecesOut : () ==> ()
 		subPiecesOut() == (
 			piecesOut := piecesOut - 1;
 );
+
 public setScore : nat  ==> ()
 		setScore(sc) == (
 			score := sc;
