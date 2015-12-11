@@ -12,53 +12,61 @@ private posL: Pos;
 private posC: Pos;
 private occupied: Occupied;
 private valid_moves: ValidMoves;
+
+--invariantes
 inv posL in set {0,...,4}
  and posC in set {0,...,4}
   and occupied in set {0,1,2};
 
 operations
+--cria uma posicao
 public Position : Pos * Pos * Occupied ==> Position
 	Position(x, y, o) == (
 		posL := x;
 		posC := y;
 		occupied:= o;
 		return self
-	);
-	
+	) 
+post posL in set {0,...,4} 
+	and posC in set {0,...,4}
+		and occupied in set {0,1,2};
+
+--define movimentos validos a partir da posicao		
 public addValidMoves : ValidMoves ==> ()
 			addValidMoves(moves)==(
 			valid_moves := moves;
 			)
 post valid_moves <> [];
-			
+
+--retorna movimentos validos para a posicao			
 public getValidMoves : () ==> ValidMoves
 		getValidMoves() == (
 			return valid_moves;
 			)
 pre valid_moves <> [];
 
+--retorna linha onde esta a posicao
 public getPosL : () ==> Pos
 		getPosL() == (
 			return posL;
 );
-			
+
+--retorna coluna onde esta a posicao		
 public getPosC : () ==> Pos
 		getPosC() == (
 			return posC;
 			);
 
+--retorna conteudo da posicao
 pure public getOccupied : () ==> Occupied
 		getOccupied() == (
 			return occupied;
 			);			
-			
+
+--define conteudo da posicao		
 public setOccupied : nat ==> ()
 		setOccupied(o) == (
 			occupied := o;
-			);
-			
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
+			);	
+
 end Position

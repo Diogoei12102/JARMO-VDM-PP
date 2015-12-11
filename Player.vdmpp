@@ -4,67 +4,82 @@ public PlayerNumber = nat1;
 public Score = nat;
 
 values
--- TODO Define values here
 instance variables
 private number: PlayerNumber;
 private score: Score := 0;
 private piecesOut: nat := 0;
 private piecesFinal: nat := 0;
 
+--invariantes
+inv number in set {1,2};
+inv score >= 0;
+inv piecesOut >= 0 and piecesOut <= 5;
+inv piecesFinal >= 0 and piecesFinal <= 5
+
 operations
+--construtor de um Jogador
 public Player : PlayerNumber ==> Player
 	Player(num) == (
 		number := num;
 		return self
-	);
-	
+	)
+post number in set {1,2};
+
+--retorna numero do jogador	
 pure public getNumber : () ==> PlayerNumber
 		getNumber() == (
 			return number;
 			);
-			
+
+--retornar pecas fora do tabuleiro		
 pure public getPiecesOut : () ==> nat
 		getPiecesOut() == (
 			return piecesOut;
 );
 
+--retornar pecas na linha do adversario
 pure public getPiecesFinal : () ==> nat
 		getPiecesFinal() == (
 			return piecesFinal;
 );
 
+--contagem de pecas na linha do adversario
 public addPiecesFinal : () ==> ()
 		addPiecesFinal() == (
 			piecesFinal := piecesFinal + 1;
-);
+)
+post piecesFinal <= 5;
 
 public subPiecesFinal : () ==> ()
 		subPiecesFinal() == (
 			piecesFinal := piecesFinal - 1;
-);
+)
+post not piecesFinal < 0;
 
+--contagem de pecas fora do tabuleiro
 public addPiecesOut : () ==> ()
 		addPiecesOut() == (
 			piecesOut := piecesOut + 1;
-);
+)
+post piecesOut <= 5;
 
 public subPiecesOut : () ==> ()
 		subPiecesOut() == (
 			piecesOut := piecesOut - 1;
-);
+)
+post not piecesOut < 0;
 
+--atribuir pontuacao
 public setScore : nat  ==> ()
 		setScore(sc) == (
 			score := sc;
-);
+)
+pre sc >= 0; 
 
+--retornar pontuacao
 pure public getScore : () ==> nat
 		getScore() == (
 			return score;
 );
--- TODO Define operations here
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
+
 end Player

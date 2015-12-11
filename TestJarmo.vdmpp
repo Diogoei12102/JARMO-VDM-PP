@@ -48,7 +48,6 @@ public testMove : () ==> ()
 			
 			IO`print("TESTAR MOVIMENTO DE PECA\n");
 			
-			assertTrue(g.isMoveValid(board(1), board(8)));
 			-- mover peca jogador 1 para casa vazia
 			IO`print("TESTE MEXER PECA PARA UMA CASA VAZIA (Jogador 1) \n");
 			IO`print("peca mexeu:"); assertTrue(g.movePiece(board(1), board(8)));
@@ -77,7 +76,7 @@ public testMove : () ==> ()
 		  IO`print("jogador mudou:");assertTrue(g.getCurrentPlayer().getNumber() = 2);-- o jogador nao pode mudar
 		    -- comer peca		  
 		  IO`print("TENTAR COMER PECA ADVERSARIO (Jogador 2) \n");
-		  IO`print("Jogador 1 para posicao vulneravel:");assertTrue(g.movePiece(board(5), board(14)));
+		  IO`print("Jogador 1 move peca para posicao vulneravel:");assertTrue(g.movePiece(board(5), board(14)));
 			IO`print("peca mexeu:");assertTrue(g.movePiece(board(25), board(14)));
 			IO`print("posicao inicial mudou:");assertTrue(board(25).getOccupied() = 0);
 		  IO`print("posicao final mudou:");assertTrue(board(14).getOccupied() = 2);
