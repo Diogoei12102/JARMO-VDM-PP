@@ -2,7 +2,7 @@ class Position
 types
 public Pos = nat;
 public Occupied = nat;
-public ValidMoves = set of Position;
+public ValidMoves = seq of Position;
 
 values
 -- TODO Define values here
@@ -29,13 +29,13 @@ public addValidMoves : ValidMoves ==> ()
 			addValidMoves(moves)==(
 			valid_moves := moves;
 			)
-post valid_moves <> {};
+post valid_moves <> [];
 			
 public getValidMoves : () ==> ValidMoves
 		getValidMoves() == (
 			return valid_moves;
 			)
-pre valid_moves <> {};
+pre valid_moves <> [];
 
 public getPosL : () ==> Pos
 		getPosL() == (

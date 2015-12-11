@@ -40,31 +40,31 @@ public Game: ()==> Game
 			dcl p24: Position := new Position(4,3,2);
 			dcl p25: Position := new Position(4,4,2);
 			
-			p1.addValidMoves({p8, p12});
-			p2.addValidMoves({p9, p11});
-			p3.addValidMoves({p6, p10, p14});
-			p4.addValidMoves({p7, p13});
-			p5.addValidMoves({p8, p14});
-			p6.addValidMoves({p3, p13});
-			p7.addValidMoves({p4, p8, p12, p18});
-			p8.addValidMoves({p1, p5, p7, p9, p15});
-			p9.addValidMoves({p2, p8, p12, p14});
-			p10.addValidMoves({p3, p19});
-			p11.addValidMoves({p2, p22});
-			p12.addValidMoves({p1, p6, p9, p17, p21, p22});
-			p13.addValidMoves({p4, p6, p16, p20});
-			p14.addValidMoves({p3, p5, p9, p17, p19, p25});
-			p15.addValidMoves({p8, p24});
-			p16.addValidMoves({p13, p23});
-			p17.addValidMoves({p12, p14, p18, p24});
-			p18.addValidMoves({p7, p17, p19, p21, p25});
-			p19.addValidMoves({p10, p14, p18, p22});
-			p20.addValidMoves({p6, p23});
-			p21.addValidMoves({p12, p18});
-			p22.addValidMoves({p11, p19});
-			p23.addValidMoves({p12, p16, p20});
-			p24.addValidMoves({p15, p17});
-			p25.addValidMoves({p14, p18});
+			p1.addValidMoves([p8, p12]);
+			p2.addValidMoves([p9, p11]);
+			p3.addValidMoves([p6, p10, p14]);
+			p4.addValidMoves([p7, p13]);
+			p5.addValidMoves([p8, p14]);
+			p6.addValidMoves([p3, p13]);
+			p7.addValidMoves([p4, p8, p12, p18]);
+			p8.addValidMoves([p1, p5, p7, p9, p15]);
+			p9.addValidMoves([p2, p8, p12, p14]);
+			p10.addValidMoves([p3, p19]);
+			p11.addValidMoves([p2, p22]);
+			p12.addValidMoves([p1, p6, p9, p17, p21, p22]);
+			p13.addValidMoves([p4, p6, p16, p20]);
+			p14.addValidMoves([p3, p5, p9, p17, p19, p25]);
+			p15.addValidMoves([p8, p24]);
+			p16.addValidMoves([p13, p23]);
+			p17.addValidMoves([p12, p14, p18, p24]);
+			p18.addValidMoves([p7, p17, p19, p21, p25]);
+			p19.addValidMoves([p10, p14, p18, p22]);
+			p20.addValidMoves([p6, p23]);
+			p21.addValidMoves([p12, p18]);
+			p22.addValidMoves([p11, p19]);
+			p23.addValidMoves([p12, p16, p20]);
+			p24.addValidMoves([p15, p17]);
+			p25.addValidMoves([p14, p18]);
 			
 			board := [p1, p2, p3, p4, p5, 
 								p6, p7, p8, p9, p10, 
@@ -118,19 +118,14 @@ public getCurrentPlayer : () ==> Player
         	
 public isMoveValid : Position * Position ==> bool
 			isMoveValid(pi, pf) == (
-				dcl valid : bool := true;
 				
-				if (pi.getOccupied() <> currentPlayer.getNumber()) 
-					then(valid := false;)
-				elseif (pf.getOccupied() = currentPlayer.getNumber()) 
-					then (valid := false;)
-				elseif (pf not in set pi.getValidMoves())
-					then (valid := false;)
-				elseif ((pi.getPosL() = 4 and currentPlayer.getNumber() = 1) or 
-						(pi.getPosL() = 0 and currentPlayer.getNumber() = 2)) 
-					then (valid := false;);
+				if (pi.getOccupied() <> currentPlayer.getNumber() 
+						or pf.getOccupied() = currentPlayer.getNumber() 
+						or pf not in set elems pi.getValidMoves() or ((pi.getPosL() = 4 and currentPlayer.getNumber() = 1) or 
+						(pi.getPosL() = 0 and currentPlayer.getNumber() = 2))) 
+					then (return false;);
 					
-				return valid;
+				return true;
 )
 pre pi in set elems getBoard() and pf in set elems board;
 
@@ -144,10 +139,11 @@ public movePiece : Position * Position ==> bool
 								);
 									pi.setOccupied(0);
 									pf.setOccupied(currentPlayer.getNumber());
-									);
-						if not ((pf.getPosL() = 0 and currentPlayer.getNumber() = 2 and currentPlayer.getPiecesOut() > 0) or (pf.getPosL() = 4 and currentPlayer.getNumber() = 1 and currentPlayer.getPiecesOut() > 0))
+						);
+						if not ((pf.getPosL() = 0 and currentPlayer.getNumber() = 2 and currentPlayer.getPiecesOut() > 0) 
+						or (pf.getPosL() = 4 and currentPlayer.getNumber() = 1 and currentPlayer.getPiecesOut() > 0))
 							then 
-							changePlayer();
+								changePlayer();
 						return true;
 		);
 		return false;
