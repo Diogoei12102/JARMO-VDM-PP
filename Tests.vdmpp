@@ -5,21 +5,28 @@ operations
 	protected assertTrue: bool ==> ()
 	assertTrue(arg) == 
 		if not arg then (
-  			IO`print("False expression\n")
+  			IO`print("#Falso#\n")
   	)
   	else 
-  		IO`print("True expression\n");
+  		IO`print("#Verdadeiro#\n");
 --post arg;
 
 	protected assertEqual: ? * ? ==> ()
 	assertEqual(expected, actual) == 
 		if expected <> actual then (
-  			IO`print("Actual value (");
+  			IO`print("Valor atingido (");
   			IO`print(actual); 
-  			IO`print(") different from expected (");
+  			IO`print(") diferente do esperado (");
   			IO`print(expected);
-  			IO`println(")\n")
+  			IO`println(")")
 		)
-	post expected = actual
+		else (
+			IO`print("Valor atingido (");
+  			IO`print(actual); 
+  			IO`print(") corresponde ao esperado (");
+  			IO`print(expected);
+  			IO`println(")"))
+  			
+--	post expected = actual
 
 end Tests
