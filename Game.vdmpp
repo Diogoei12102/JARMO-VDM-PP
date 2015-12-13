@@ -8,6 +8,7 @@ private board: Board;
 private currentPlayer: Player;
 private opponent: Player;
 private players: seq of Player;
+private restore: bool;
 
 --invariants
 inv len players = 2;
@@ -46,28 +47,28 @@ public Game: ()==> Game
 			
 			p1.addValidMoves([p8, p12]);
 			p2.addValidMoves([p9, p11]);
-			p3.addValidMoves([p6, p10, p14]);
-			p4.addValidMoves([p7, p13]);
+			p3.addValidMoves([p6, p10, p12]);
+			p4.addValidMoves([p7, p15]);
 			p5.addValidMoves([p8, p14]);
 			p6.addValidMoves([p3, p13]);
-			p7.addValidMoves([p4, p8, p12, p18]);
-			p8.addValidMoves([p1, p5, p7, p9, p15]);
-			p9.addValidMoves([p2, p8, p12, p14]);
-			p10.addValidMoves([p3, p19]);
+			p7.addValidMoves([p4, p8, p12, p14]);
+			p8.addValidMoves([p1, p5, p7, p9, p17]);
+			p9.addValidMoves([p2, p8, p14, p20]);
+			p10.addValidMoves([p3, p13]);
 			p11.addValidMoves([p2, p22]);
-			p12.addValidMoves([p1, p6, p9, p17, p21, p22]);
-			p13.addValidMoves([p4, p6, p16, p20]);
-			p14.addValidMoves([p3, p5, p9, p17, p19, p25]);
-			p15.addValidMoves([p8, p24]);
+			p12.addValidMoves([p1, p3, p7, p17, p19, p21]);
+			p13.addValidMoves([p6, p10, p16, p24]);
+			p14.addValidMoves([p5, p7, p9, p19, p23, p25]);
+			p15.addValidMoves([p4, p18]);
 			p16.addValidMoves([p13, p23]);
-			p17.addValidMoves([p12, p14, p18, p24]);
-			p18.addValidMoves([p7, p17, p19, p21, p25]);
-			p19.addValidMoves([p10, p14, p18, p22]);
-			p20.addValidMoves([p6, p23]);
+			p17.addValidMoves([p8, p12, p18, p24]);
+			p18.addValidMoves([p15, p17, p19, p21, p25]);
+			p19.addValidMoves([p12, p14, p18, p22]);
+			p20.addValidMoves([p9, p23]);
 			p21.addValidMoves([p12, p18]);
 			p22.addValidMoves([p11, p19]);
-			p23.addValidMoves([p12, p16, p20]);
-			p24.addValidMoves([p15, p17]);
+			p23.addValidMoves([p14, p16, p20]);
+			p24.addValidMoves([p13, p17]);
 			p25.addValidMoves([p14, p18]);
 			
 			board := [p1, p2, p3, p4, p5, 
@@ -82,6 +83,8 @@ public Game: ()==> Game
 			opponent := new Player(2);
 			--guarda os dois jogadores (1 e 2)
 			players := [currentPlayer, opponent];
+			--indica se jogador tem de repor peca no tabileiro
+			restore := false;
 		
 		return self;
 )
@@ -154,7 +157,9 @@ public movePiece : Position * Position ==> bool
 						if not ((pf.getPosL() = 0 and currentPlayer.getNumber() = 2 and currentPlayer.getPiecesOut() > 0) 
 						or (pf.getPosL() = 4 and currentPlayer.getNumber() = 1 and currentPlayer.getPiecesOut() > 0))
 							then 
-								changePlayer();
+								(changePlayer();)
+						else
+							(restore := true;);
 						return true;
 		);
 		return false;
@@ -247,9 +252,11 @@ post currentPlayer.getScore() > 0 or opponent.getScore() > 0;
 --jogada sem restorePiece() - escolha arbitraria de um jogador - sera implementada na classe de testes
 public turn : Position * Position ==> () 
 	turn(pi, pf) == (
-		if movePiece(pi,pf)
+		if (movePiece(pi,pf) and restore)
 			then 
-				changePlayer();
+				IO`print("A espera que o Jogador ");
+				IO`print(currentPlayer.getNumber());
+				IO`print(" restaure uma peca.");
 		if gameEnds()
 		 then countPoints();
 );
