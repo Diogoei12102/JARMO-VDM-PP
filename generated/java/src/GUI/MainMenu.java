@@ -27,7 +27,6 @@ public class MainMenu extends JFrame {
 	
 	private JPanel contentPane;
 	private JPanel buttonpanel;
-	JPanel panel;
 	GameGraphics game;
 	JButton btnStart;
 	Game engine;
@@ -80,23 +79,26 @@ public class MainMenu extends JFrame {
 		JButton btnExit = new JButton("Exit ");
 		buttonpanel.add(btnExit);
 		
-		panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel.setBounds(421, 0, 163, 420);
-		contentPane.add(panel);
-		
 		lblJogadorAtual = new JLabel("Jogador Atual : " + engine.getCurrentPlayer().getNumber());
-		panel.add(lblJogadorAtual);
+		lblJogadorAtual.setBounds(431, 13, 153, 16);
+		contentPane.add(lblJogadorAtual);
 		
 		lblNumeroDePecas = new JLabel("Numero de pecas fora : " + engine.getCurrentPlayer().getPiecesOut());
-		panel.add(lblNumeroDePecas);
+		lblNumeroDePecas.setBounds(432, 45, 152, 16);
+		contentPane.add(lblNumeroDePecas);
+		
+		
+//		lblJogadorAtual = new JLabel("Jogador Atual : " + engine.getCurrentPlayer().getNumber());
+//		getContentPane().add(lblJogadorAtual);
+//		
+//		lblNumeroDePecas = new JLabel("Numero de pecas fora : " + engine.getCurrentPlayer().getPiecesOut());
+//		getContentPane().add(lblNumeroDePecas);
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				System.exit(0);
 			}
 
 		});
-		
 		
 
 	}
@@ -109,8 +111,14 @@ public class MainMenu extends JFrame {
 		lblNumeroDePecas.setText("Numero de pecas fora : " + engine.getCurrentPlayer().getPiecesOut());
 		lblJogadorAtual.setText("Jogador Atual : " + engine.getCurrentPlayer().getNumber());
 		getContentPane().add(buttonpanel);
-		getContentPane().add(panel);
+		getContentPane().add(lblNumeroDePecas);
+		getContentPane().add(lblJogadorAtual);
 		buttonpanel.setVisible(true);
 		buttonpanel.requestFocus();
+	}
+
+	public void updateSidePanel() {
+		// TODO Auto-generated method stub
+		
 	}
 }

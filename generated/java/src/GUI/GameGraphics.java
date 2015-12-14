@@ -88,6 +88,7 @@ public class GameGraphics extends JPanel {
 		int size = board.size();
 		mainmenu.getContentPane().removeAll();
 		mainmenu.showBackground();
+		
 		for (int i = 0; i < size; i++) {
 			// criar panels para clicar
 
