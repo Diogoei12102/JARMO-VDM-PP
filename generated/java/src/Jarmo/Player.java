@@ -67,4 +67,6 @@ public class Player {
         Utils.toString(piecesOut) + ", piecesFinal := " +
         Utils.toString(piecesFinal) + "}";
     }
+
+	
 }

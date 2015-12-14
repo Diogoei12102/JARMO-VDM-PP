@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import Jarmo.Game;
+import Jarmo.Player;
 import Jarmo.Position;
 
 @SuppressWarnings("serial")
@@ -29,36 +30,47 @@ public class MousePanel extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				
-				
-				
+
 			}
 
 			@Override
 			public void mousePressed(MouseEvent e) {
 				Position p = (Position) engine.getBoard().get(number);
-				if(engine.getRestore()){
-					if(!engine.restorePiece(p)){
+				if (engine.getRestore()) {
+					if (!engine.restorePiece(p)) {
 						JOptionPane.showMessageDialog(null, "Não é possivel repor uma peça na posiçao selecionada");
-					}
-					else
-					game.drawAll(game.g2d);
+					} else
+						game.drawAll(game.g2d);
 					game.repaint();
 
-				}
-				else
-				if (game.click_counter == 0 && p.getOccupied() != engine.getCurrentPlayer().getNumber())
+				} else if (game.click_counter == 0 && p.getOccupied() != engine.getCurrentPlayer().getNumber())
 					JOptionPane.showMessageDialog(null, "Choose one of your Pieces");
 				else if (game.click_counter == 1) {
 					game.click_counter = 0;
 					if (engine.movePiece((Position) engine.getBoard().get(game.lastclick),
 							(Position) engine.getBoard().get(number))) {
-						if(engine.getRestore()){
-							JOptionPane.showMessageDialog(null, "O jogador " + engine.getCurrentPlayer().getNumber() + "tem de repor uma peca");
-						}
 						game.drawAll(game.g2d);
 						game.repaint();
+
+						if (engine.getRestore()) {
+							JOptionPane.showMessageDialog(null,
+									"O jogador " + engine.getCurrentPlayer().getNumber() + "tem de repor uma peca");
+						}
+						if (engine.gameEnds()){
+							engine.countPoints();
+							Player p1= (Player) engine.getPlayers().get(0);
+							Player p2 = (Player) engine.getPlayers().get(1);
+							int pointsP1 = p1.getScore().intValue();
+							int pointsP2 = p2.getScore().intValue();
+							if(pointsP1 > pointsP2){
+								JOptionPane.showMessageDialog(null,
+										"O jogador 1 ganhou com"+ pointsP1+" pontos");
+								
+							}
+							else JOptionPane.showMessageDialog(null,
+									"O jogador 2 ganhou com"+ pointsP2+" pontos");
+							
+						}
 
 					} else {
 						System.out.println("movimento invalido");
