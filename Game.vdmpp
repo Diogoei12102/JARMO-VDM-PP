@@ -260,5 +260,10 @@ public turn : Position * Position ==> ()
 		if gameEnds()
 		 then countPoints();
 );
-			
+--retornar o valor de restore
+public getRestore : () ==> bool
+        	getRestore() == (
+        	return restore;
+        	);
+	
 end Game

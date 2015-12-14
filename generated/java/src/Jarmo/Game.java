@@ -378,6 +378,10 @@ public class Game {
         }
     }
 
+    public Boolean getRestore() {
+        return restore;
+    }
+
     public String toString() {
         return "Game{" + "board := " + Utils.toString(board) +
         ", currentPlayer := " + Utils.toString(currentPlayer) +
