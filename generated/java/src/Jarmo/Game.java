@@ -11,6 +11,7 @@ public class Game {
     private Player currentPlayer;
     private Player opponent;
     private VDMSeq players;
+    private Boolean restore;
 
     public Game() {
         cg_init_Game_1();
@@ -44,34 +45,35 @@ public class Game {
         Position p25 = new Position(4L, 4L, 2L);
         p1.addValidMoves(SeqUtil.seq(p8, p12));
         p2.addValidMoves(SeqUtil.seq(p9, p11));
-        p3.addValidMoves(SeqUtil.seq(p6, p10, p14));
-        p4.addValidMoves(SeqUtil.seq(p7, p13));
+        p3.addValidMoves(SeqUtil.seq(p6, p10, p12));
+        p4.addValidMoves(SeqUtil.seq(p7, p15));
         p5.addValidMoves(SeqUtil.seq(p8, p14));
         p6.addValidMoves(SeqUtil.seq(p3, p13));
-        p7.addValidMoves(SeqUtil.seq(p4, p8, p12, p18));
-        p8.addValidMoves(SeqUtil.seq(p1, p5, p7, p9, p15));
-        p9.addValidMoves(SeqUtil.seq(p2, p8, p12, p14));
-        p10.addValidMoves(SeqUtil.seq(p3, p19));
+        p7.addValidMoves(SeqUtil.seq(p4, p8, p12, p14));
+        p8.addValidMoves(SeqUtil.seq(p1, p5, p7, p9, p17));
+        p9.addValidMoves(SeqUtil.seq(p2, p8, p14, p20));
+        p10.addValidMoves(SeqUtil.seq(p3, p13));
         p11.addValidMoves(SeqUtil.seq(p2, p22));
-        p12.addValidMoves(SeqUtil.seq(p1, p6, p9, p17, p21, p22));
-        p13.addValidMoves(SeqUtil.seq(p4, p6, p16, p20));
-        p14.addValidMoves(SeqUtil.seq(p3, p5, p9, p17, p19, p25));
-        p15.addValidMoves(SeqUtil.seq(p8, p24));
+        p12.addValidMoves(SeqUtil.seq(p1, p3, p7, p17, p19, p21));
+        p13.addValidMoves(SeqUtil.seq(p6, p10, p16, p24));
+        p14.addValidMoves(SeqUtil.seq(p5, p7, p9, p19, p23, p25));
+        p15.addValidMoves(SeqUtil.seq(p4, p18));
         p16.addValidMoves(SeqUtil.seq(p13, p23));
-        p17.addValidMoves(SeqUtil.seq(p12, p14, p18, p24));
-        p18.addValidMoves(SeqUtil.seq(p7, p17, p19, p21, p25));
-        p19.addValidMoves(SeqUtil.seq(p10, p14, p18, p22));
-        p20.addValidMoves(SeqUtil.seq(p6, p23));
+        p17.addValidMoves(SeqUtil.seq(p8, p12, p18, p24));
+        p18.addValidMoves(SeqUtil.seq(p15, p17, p19, p21, p25));
+        p19.addValidMoves(SeqUtil.seq(p12, p14, p18, p22));
+        p20.addValidMoves(SeqUtil.seq(p9, p23));
         p21.addValidMoves(SeqUtil.seq(p12, p18));
         p22.addValidMoves(SeqUtil.seq(p11, p19));
-        p23.addValidMoves(SeqUtil.seq(p12, p16, p20));
-        p24.addValidMoves(SeqUtil.seq(p15, p17));
+        p23.addValidMoves(SeqUtil.seq(p14, p16, p20));
+        p24.addValidMoves(SeqUtil.seq(p13, p17));
         p25.addValidMoves(SeqUtil.seq(p14, p18));
         board = SeqUtil.seq(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12,
                 p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25);
         currentPlayer = new Player(1L);
         opponent = new Player(2L);
         players = SeqUtil.seq(currentPlayer, opponent);
+        restore = false;
 
         return;
     }
@@ -162,57 +164,57 @@ public class Game {
 
     public Boolean movePiece(final Position pi, final Position pf) {
         if (isMoveValid(pi, pf)) {
-            if (Utils.equals(pi.getOccupied(), currentPlayer.getNumber())) {
-                if (Utils.equals(pf.getOccupied(), opponent.getNumber())) {
-                    eatPiece();
-                }
-
-                pi.setOccupied(0L);
-                pf.setOccupied(currentPlayer.getNumber());
+            if (Utils.equals(pf.getOccupied(), opponent.getNumber())) {
+                eatPiece();
             }
 
-            Boolean orResult_5 = false;
+            pi.setOccupied(0L);
+            pf.setOccupied(currentPlayer.getNumber());
 
-            Boolean andResult_6 = false;
+            Boolean orResult_6 = false;
+
+            Boolean andResult_8 = false;
 
             if (Utils.equals(pf.getPosL(), 0L)) {
-                Boolean andResult_7 = false;
+                Boolean andResult_9 = false;
 
                 if (Utils.equals(currentPlayer.getNumber(), 2L)) {
                     if (currentPlayer.getPiecesOut().longValue() > 0L) {
-                        andResult_7 = true;
+                        andResult_9 = true;
                     }
                 }
 
-                if (andResult_7) {
-                    andResult_6 = true;
+                if (andResult_9) {
+                    andResult_8 = true;
                 }
             }
 
-            if (andResult_6) {
-                orResult_5 = true;
+            if (andResult_8) {
+                orResult_6 = true;
             } else {
-                Boolean andResult_8 = false;
+                Boolean andResult_10 = false;
 
                 if (Utils.equals(pf.getPosL(), 4L)) {
-                    Boolean andResult_9 = false;
+                    Boolean andResult_11 = false;
 
                     if (Utils.equals(currentPlayer.getNumber(), 1L)) {
                         if (currentPlayer.getPiecesOut().longValue() > 0L) {
-                            andResult_9 = true;
+                            andResult_11 = true;
                         }
                     }
 
-                    if (andResult_9) {
-                        andResult_8 = true;
+                    if (andResult_11) {
+                        andResult_10 = true;
                     }
                 }
 
-                orResult_5 = andResult_8;
+                orResult_6 = andResult_10;
             }
 
-            if (!(orResult_5)) {
+            if (!(orResult_6)) {
                 changePlayer();
+            } else {
+                restore = true;
             }
 
             return true;
@@ -226,26 +228,26 @@ public class Game {
     }
 
     public void restorePiece(final Position p) {
-        Boolean andResult_11 = false;
+        Boolean andResult_13 = false;
 
         if (Utils.equals(currentPlayer.getNumber(), 1L)) {
             if (Utils.equals(p.getPosL(), 0L)) {
-                andResult_11 = true;
+                andResult_13 = true;
             }
         }
 
-        if (andResult_11) {
+        if (andResult_13) {
             p.setOccupied(currentPlayer.getNumber());
         } else {
-            Boolean andResult_12 = false;
+            Boolean andResult_14 = false;
 
             if (Utils.equals(currentPlayer.getNumber(), 2L)) {
                 if (Utils.equals(p.getPosL(), 4L)) {
-                    andResult_12 = true;
+                    andResult_14 = true;
                 }
             }
 
-            if (andResult_12) {
+            if (andResult_14) {
                 p.setOccupied(currentPlayer.getNumber());
             } else {
                 return;
@@ -277,39 +279,39 @@ public class Game {
             }
         }
 
-        Boolean andResult_13 = false;
+        Boolean andResult_15 = false;
 
         if (Utils.equals(currentPlayer.getNumber(), 1L)) {
             if (Utils.equals(currentPlayer.getPiecesOut(), cntP1)) {
-                andResult_13 = true;
+                andResult_15 = true;
             }
         }
 
-        if (andResult_13) {
+        if (andResult_15) {
             return true;
         }
 
-        Boolean andResult_14 = false;
+        Boolean andResult_16 = false;
 
         if (Utils.equals(currentPlayer.getNumber(), 2L)) {
             if (Utils.equals(currentPlayer.getPiecesOut(), cntP2)) {
-                andResult_14 = true;
+                andResult_16 = true;
             }
         }
 
-        if (andResult_14) {
+        if (andResult_16) {
             return true;
         }
 
-        Boolean orResult_6 = false;
+        Boolean orResult_7 = false;
 
         if (Utils.equals(currentPlayer.getPiecesOut(), 5L)) {
-            orResult_6 = true;
+            orResult_7 = true;
         } else {
-            orResult_6 = Utils.equals(opponent.getPiecesOut(), 5L);
+            orResult_7 = Utils.equals(opponent.getPiecesOut(), 5L);
         }
 
-        if (orResult_6) {
+        if (orResult_7) {
             return true;
         }
 
@@ -356,9 +358,20 @@ public class Game {
     }
 
     public void turn(final Position pi, final Position pf) {
+        Boolean andResult_17 = false;
+
         if (movePiece(pi, pf)) {
-            changePlayer();
+            if (restore) {
+                andResult_17 = true;
+            }
         }
+
+        if (andResult_17) {
+            IO.print("A espera que o Jogador ");
+        }
+
+        IO.print(currentPlayer.getNumber());
+        IO.print(" restaure uma peca.");
 
         if (gameEnds()) {
             countPoints();
@@ -369,6 +382,7 @@ public class Game {
         return "Game{" + "board := " + Utils.toString(board) +
         ", currentPlayer := " + Utils.toString(currentPlayer) +
         ", opponent := " + Utils.toString(opponent) + ", players := " +
-        Utils.toString(players) + "}";
+        Utils.toString(players) + ", restore := " + Utils.toString(restore) +
+        "}";
     }
 }

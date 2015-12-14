@@ -55,8 +55,6 @@ public class TestJarmo extends Tests {
         Game g = new Game();
         VDMSeq board = g.getBoard();
         IO.print("TESTAR MOVIMENTO DE PECA\n");
-        super.assertTrue(g.isMoveValid(((Position) Utils.get(board, 1L)),
-                ((Position) Utils.get(board, 8L))));
         IO.print("TESTE MEXER PECA PARA UMA CASA VAZIA (Jogador 1) \n");
         IO.print("peca mexeu:");
         super.assertTrue(g.movePiece(((Position) Utils.get(board, 1L)),
@@ -106,7 +104,7 @@ public class TestJarmo extends Tests {
         IO.print("jogador mudou:");
         super.assertTrue(Utils.equals(g.getCurrentPlayer().getNumber(), 2L));
         IO.print("TENTAR COMER PECA ADVERSARIO (Jogador 2) \n");
-        IO.print("Jogador 1 para posicao vulneravel:");
+        IO.print("Jogador 1 move peca para posicao vulneravel:");
         super.assertTrue(g.movePiece(((Position) Utils.get(board, 5L)),
                 ((Position) Utils.get(board, 14L))));
         IO.print("peca mexeu:");
