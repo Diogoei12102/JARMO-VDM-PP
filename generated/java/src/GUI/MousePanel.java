@@ -55,7 +55,7 @@ public class MousePanel extends JPanel {
 
 						if (engine.getRestore()) {
 							JOptionPane.showMessageDialog(null,
-									"O jogador " + engine.getCurrentPlayer().getNumber() + "tem de repor uma peca");
+									"O jogador " + engine.getCurrentPlayer().getNumber() + " tem de repor uma peca");
 						}
 						if (engine.gameEnds()){
 							engine.countPoints();
