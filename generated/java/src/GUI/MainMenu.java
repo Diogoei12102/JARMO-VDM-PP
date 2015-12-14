@@ -30,8 +30,6 @@ public class MainMenu extends JFrame {
 	GameGraphics game;
 	JButton btnStart;
 	Game engine;
-	private JLabel lblNumeroDePecas;
-	private JLabel lblJogadorAtual;
 	public static void main(String[] args) {
 		MainMenu frame = new MainMenu();
 		frame.setVisible(true);
@@ -44,19 +42,19 @@ public class MainMenu extends JFrame {
 	public MainMenu() {
 		engine = new Game();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(200, 200, 602,500);
+		setBounds(200, 200, 423,513);
 		contentPane = new JPanel();
 		//contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		buttonpanel = new JPanel();
-		buttonpanel.setBounds(0, 428, 584, 25);
+		buttonpanel.setBounds(0, 455, 420, 25);
 		contentPane.add(buttonpanel);
 		buttonpanel.setLayout(new GridLayout(1, 3, 0, 0));
 		buttonpanel.requestFocus();
 		game = new GameGraphics(engine , this);
-		game.setBorder(new LineBorder(new Color(0, 0, 0)));
-		game.setBounds(0, 0, 420, 420);
+		game.setBorder(null);
+		game.setBounds(0, 0, 420, 450);
 		contentPane.add(game);
 		game.setVisible(false);
 		btnStart = new JButton("Start");
@@ -79,14 +77,6 @@ public class MainMenu extends JFrame {
 		JButton btnExit = new JButton("Exit ");
 		buttonpanel.add(btnExit);
 		
-		lblJogadorAtual = new JLabel("Jogador Atual : " + engine.getCurrentPlayer().getNumber());
-		lblJogadorAtual.setBounds(431, 13, 153, 16);
-		contentPane.add(lblJogadorAtual);
-		
-		lblNumeroDePecas = new JLabel("Numero de pecas fora : " + engine.getCurrentPlayer().getPiecesOut());
-		lblNumeroDePecas.setBounds(432, 45, 152, 16);
-		contentPane.add(lblNumeroDePecas);
-		
 		
 //		lblJogadorAtual = new JLabel("Jogador Atual : " + engine.getCurrentPlayer().getNumber());
 //		getContentPane().add(lblJogadorAtual);
@@ -108,17 +98,14 @@ public class MainMenu extends JFrame {
 	 * 
 	 */
 	public void showBackground() {
-		lblNumeroDePecas.setText("Numero de pecas fora : " + engine.getCurrentPlayer().getPiecesOut());
-		lblJogadorAtual.setText("Jogador Atual : " + engine.getCurrentPlayer().getNumber());
 		getContentPane().add(buttonpanel);
-		getContentPane().add(lblNumeroDePecas);
-		getContentPane().add(lblJogadorAtual);
 		buttonpanel.setVisible(true);
 		buttonpanel.requestFocus();
 	}
 
-	public void updateSidePanel() {
-		// TODO Auto-generated method stub
-		
+
+	public void restart() {
+		getContentPane().removeAll();
+		getContentPane().add(buttonpanel);
 	}
 }

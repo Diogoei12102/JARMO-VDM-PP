@@ -1,5 +1,6 @@
 package GUI;
 
+import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -63,12 +64,12 @@ public class MousePanel extends JPanel {
 							int pointsP1 = p1.getScore().intValue();
 							int pointsP2 = p2.getScore().intValue();
 							if(pointsP1 > pointsP2){
-								JOptionPane.showMessageDialog(null,
-										"O jogador 1 ganhou com"+ pointsP1+" pontos");
+								JOptionPane.showMessageDialog(restart(),
+										"O jogador 1 ganhou com "+ pointsP1+" pontos e o jogador 2 com "+ pointsP2 +" pontos");
 								
 							}
-							else JOptionPane.showMessageDialog(null,
-									"O jogador 2 ganhou com"+ pointsP2+" pontos");
+							else JOptionPane.showMessageDialog(restart(),
+									"O jogador 2 ganhou com "+ pointsP2+" pontos e o jogador 1 com "+ pointsP1 +" pontos");
 							
 						}
 
@@ -80,6 +81,11 @@ public class MousePanel extends JPanel {
 					game.click_counter++;
 				game.lastclick = number;
 
+			}
+
+			private Component restart() {
+				game.mainmenu.restart();
+				return null;
 			}
 
 			@Override

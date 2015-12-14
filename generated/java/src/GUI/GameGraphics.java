@@ -14,6 +14,7 @@ import org.overture.codegen.runtime.VDMSeq;
 
 import Jarmo.Game;
 import Jarmo.Position;
+import javax.swing.JLabel;
 
 /**
  * 
@@ -31,6 +32,8 @@ public class GameGraphics extends JPanel {
 	int imageWidth;
 	private int imageHeight;
 	int lastclick;
+	JLabel lblPlayer;
+	JLabel lblPiecesOut;
 	Graphics2D g2d;
 	Game engine;
 	MainMenu mainmenu;
@@ -45,10 +48,18 @@ public class GameGraphics extends JPanel {
 		this.mainmenu = mainmenu;
 		setFocusable(true);
 		setDoubleBuffered(true);
+		setLayout(null);
+		
+		lblPlayer = new JLabel("Jogador: "+ engine.getCurrentPlayer().getNumber());
+		lblPlayer.setBounds(130, 430, 100, 16);
+		add(lblPlayer);
+		lblPiecesOut = new JLabel("Pecas fora: "+ engine.getCurrentPlayer().getPiecesOut());
+		lblPiecesOut.setBounds(230, 430, 100, 16);
+		add(lblPiecesOut);
 		loadSprites();
 
 		imageWidth = this.getWidth() / 5;
-		imageHeight = this.getHeight() / 5;
+		imageHeight = (this.getHeight() -30)/ 5;
 
 	}
 
@@ -64,6 +75,8 @@ public class GameGraphics extends JPanel {
 	}
 
 	public void Start() {
+		engine = new Game();
+		
 		setVisible(true);
 		requestFocus();
 		repaint();
@@ -78,12 +91,13 @@ public class GameGraphics extends JPanel {
 	}
 
 	void drawAll(Graphics2D g2d) {
-		System.out.println("a pintar");
+		lblPlayer.setText("Jogador: "+ engine.getCurrentPlayer().getNumber());
+		lblPiecesOut.setText("Pecas fora: "+ engine.getCurrentPlayer().getPiecesOut());
 		mainmenu.getContentPane().removeAll();
 
 		drawBackground(g2d);
 		imageWidth = this.getWidth() / 5;
-		imageHeight = this.getHeight() / 5;
+		imageHeight = (this.getHeight()-30) / 5;
 		VDMSeq board = engine.getBoard();
 		int size = board.size();
 		mainmenu.getContentPane().removeAll();
@@ -122,7 +136,7 @@ public class GameGraphics extends JPanel {
 
 	private void drawBackground(Graphics2D g2d) {
 
-		g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight(), 0, 0, background.getWidth(null),
+		g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight()-30, 0, 0, background.getWidth(null),
 				background.getHeight(null), null);
 	}
 
@@ -145,5 +159,4 @@ public class GameGraphics extends JPanel {
 		g2d.drawImage(blackPiece, dx, dy, dx + imageWidth, dy + imageHeight, 0, 0, blackPiece.getWidth(null),
 				blackPiece.getHeight(null), null);
 	}
-
 }
