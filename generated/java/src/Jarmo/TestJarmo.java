@@ -330,12 +330,8 @@ public class TestJarmo extends Tests {
             "Pecas fora do tabuleiro do Jogador 1 (Jogador 1 tem de ter uma peca fora do tabuleiro para a poder restaurar): ");
         super.assertEqual(1L,
             ((Player) Utils.get(g.getPlayers(), 1L)).getPiecesOut());
-        g.restorePiece(p1);
         IO.print("Jogador 1 restaura peca na posicao 1: ");
-        super.assertEqual(((Position) Utils.get(g.getBoard(), 1L)).getOccupied(),
-            1L);
-        super.assertEqual(((Player) Utils.get(g.getPlayers(), 1L)).getPiecesOut(),
-            0L);
+        super.assertTrue(g.restorePiece(p1));
     }
 
     public static void main() {

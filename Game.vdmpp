@@ -175,16 +175,21 @@ public eatPiece : () ==> ()
 post opponent.getPiecesOut() < 6;
 
 --repor propria peca em jogo
-public restorePiece : Position ==> ()
+public restorePiece : Position ==> bool
 	restorePiece(p) == (
+		dcl valid : bool := false;
 		if (currentPlayer.getNumber() = 1 and p.getPosL() = 0) then
-			(p.setOccupied(currentPlayer.getNumber());)
+			(p.setOccupied(currentPlayer.getNumber());
+			valid := true;)
 		elseif (currentPlayer.getNumber() = 2 and p.getPosL() = 4) then
-		 (p.setOccupied(currentPlayer.getNumber());)
+		 (p.setOccupied(currentPlayer.getNumber());
+		 valid := true;)
 		else 
-		 return;
+		 return false;
 		currentPlayer.subPiecesOut();
 		changePlayer();
+		return valid;
+		
 )
 pre currentPlayer.getPiecesOut() > 0 
 	and p.getOccupied() = 0;

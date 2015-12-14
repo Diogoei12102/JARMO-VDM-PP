@@ -227,7 +227,8 @@ public class Game {
         opponent.addPiecesOut();
     }
 
-    public void restorePiece(final Position p) {
+    public Boolean restorePiece(final Position p) {
+        Boolean valid = false;
         Boolean andResult_13 = false;
 
         if (Utils.equals(currentPlayer.getNumber(), 1L)) {
@@ -238,6 +239,7 @@ public class Game {
 
         if (andResult_13) {
             p.setOccupied(currentPlayer.getNumber());
+            valid = true;
         } else {
             Boolean andResult_14 = false;
 
@@ -249,13 +251,16 @@ public class Game {
 
             if (andResult_14) {
                 p.setOccupied(currentPlayer.getNumber());
+                valid = true;
             } else {
-                return;
+                return false;
             }
         }
 
         currentPlayer.subPiecesOut();
         changePlayer();
+
+        return valid;
     }
 
     public Boolean gameEnds() {

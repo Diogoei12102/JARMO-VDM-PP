@@ -318,10 +318,9 @@ public testRestorePiece : () ==> ()
 		IO`print("Pecas fora do tabuleiro do Jogador 1 (Jogador 1 tem de ter uma peca fora do tabuleiro para a poder restaurar): ");
 		assertEqual(1, g.getPlayers()(1).getPiecesOut()); --
 		
-		g.restorePiece(p1);
+		
 		IO`print("Jogador 1 restaura peca na posicao 1: ");
-		assertEqual(g.getBoard()(1).getOccupied(), 1); --
-		assertEqual(g.getPlayers()(1).getPiecesOut(), 0);
+		assertTrue(g.restorePiece(p1));
 				
 );
 
