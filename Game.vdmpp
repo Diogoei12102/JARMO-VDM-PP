@@ -178,16 +178,17 @@ post opponent.getPiecesOut() < 6;
 public restorePiece : Position ==> bool
 	restorePiece(p) == (
 		dcl valid : bool := false;
-		if (currentPlayer.getNumber() = 1 and p.getPosL() = 0) then
+		if (currentPlayer.getNumber() = 1 and p.getPosL() = 0 and p.getOccupied() = 0) then
 			(p.setOccupied(currentPlayer.getNumber());
 			valid := true;)
-		elseif (currentPlayer.getNumber() = 2 and p.getPosL() = 4) then
+		elseif (currentPlayer.getNumber() = 2 and p.getPosL() = 4 and p.getOccupied() = 0) then
 		 (p.setOccupied(currentPlayer.getNumber());
 		 valid := true;)
 		else 
 		 return false;
 		currentPlayer.subPiecesOut();
 		changePlayer();
+		restore := false;
 		return valid;
 		
 )

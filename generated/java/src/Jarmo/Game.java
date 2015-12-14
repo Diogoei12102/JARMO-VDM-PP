@@ -232,7 +232,15 @@ public class Game {
         Boolean andResult_13 = false;
 
         if (Utils.equals(currentPlayer.getNumber(), 1L)) {
+            Boolean andResult_14 = false;
+
             if (Utils.equals(p.getPosL(), 0L)) {
+                if (Utils.equals(p.getOccupied(), 0L)) {
+                    andResult_14 = true;
+                }
+            }
+
+            if (andResult_14) {
                 andResult_13 = true;
             }
         }
@@ -241,15 +249,23 @@ public class Game {
             p.setOccupied(currentPlayer.getNumber());
             valid = true;
         } else {
-            Boolean andResult_14 = false;
+            Boolean andResult_15 = false;
 
             if (Utils.equals(currentPlayer.getNumber(), 2L)) {
+                Boolean andResult_16 = false;
+
                 if (Utils.equals(p.getPosL(), 4L)) {
-                    andResult_14 = true;
+                    if (Utils.equals(p.getOccupied(), 0L)) {
+                        andResult_16 = true;
+                    }
+                }
+
+                if (andResult_16) {
+                    andResult_15 = true;
                 }
             }
 
-            if (andResult_14) {
+            if (andResult_15) {
                 p.setOccupied(currentPlayer.getNumber());
                 valid = true;
             } else {
@@ -259,6 +275,7 @@ public class Game {
 
         currentPlayer.subPiecesOut();
         changePlayer();
+        restore = false;
 
         return valid;
     }
@@ -284,27 +301,27 @@ public class Game {
             }
         }
 
-        Boolean andResult_15 = false;
+        Boolean andResult_17 = false;
 
         if (Utils.equals(currentPlayer.getNumber(), 1L)) {
             if (Utils.equals(currentPlayer.getPiecesOut(), cntP1)) {
-                andResult_15 = true;
+                andResult_17 = true;
             }
         }
 
-        if (andResult_15) {
+        if (andResult_17) {
             return true;
         }
 
-        Boolean andResult_16 = false;
+        Boolean andResult_18 = false;
 
         if (Utils.equals(currentPlayer.getNumber(), 2L)) {
             if (Utils.equals(currentPlayer.getPiecesOut(), cntP2)) {
-                andResult_16 = true;
+                andResult_18 = true;
             }
         }
 
-        if (andResult_16) {
+        if (andResult_18) {
             return true;
         }
 
@@ -363,15 +380,15 @@ public class Game {
     }
 
     public void turn(final Position pi, final Position pf) {
-        Boolean andResult_17 = false;
+        Boolean andResult_19 = false;
 
         if (movePiece(pi, pf)) {
             if (restore) {
-                andResult_17 = true;
+                andResult_19 = true;
             }
         }
 
-        if (andResult_17) {
+        if (andResult_19) {
             IO.print("A espera que o Jogador ");
         }
 
