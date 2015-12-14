@@ -42,13 +42,13 @@ public class MainMenu extends JFrame {
 	public MainMenu() {
 		engine = new Game();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(200, 200, 423,513);
+		setBounds(200, 200, 423,510);
 		contentPane = new JPanel();
 		//contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		buttonpanel = new JPanel();
-		buttonpanel.setBounds(0, 455, 420, 25);
+		buttonpanel.setBounds(0, 450, 418, 25);
 		contentPane.add(buttonpanel);
 		buttonpanel.setLayout(new GridLayout(1, 3, 0, 0));
 		buttonpanel.requestFocus();
@@ -56,7 +56,7 @@ public class MainMenu extends JFrame {
 		game.setBorder(null);
 		game.setBounds(0, 0, 420, 450);
 		contentPane.add(game);
-		game.setVisible(false);
+		game.setVisible(true);
 		btnStart = new JButton("Start");
 		buttonpanel.add(btnStart);
 		
@@ -105,7 +105,10 @@ public class MainMenu extends JFrame {
 
 
 	public void restart() {
+		
 		getContentPane().removeAll();
 		getContentPane().add(buttonpanel);
+		getContentPane().add(game);
+		
 	}
 }

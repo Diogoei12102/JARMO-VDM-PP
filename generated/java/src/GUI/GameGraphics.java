@@ -29,6 +29,7 @@ public class GameGraphics extends JPanel {
 	private Image blackPiece;
 	private Image whitePiece;
 	private Image background;
+	private Image initialBackground;
 	int imageWidth;
 	private int imageHeight;
 	int lastclick;
@@ -39,6 +40,7 @@ public class GameGraphics extends JPanel {
 	MainMenu mainmenu;
 	Timer timer;
 	int click_counter;
+	private boolean started = false;
 
 	/**
 	 * Create the panel.
@@ -49,17 +51,12 @@ public class GameGraphics extends JPanel {
 		setFocusable(true);
 		setDoubleBuffered(true);
 		setLayout(null);
+
 		
-		lblPlayer = new JLabel("Jogador: "+ engine.getCurrentPlayer().getNumber());
-		lblPlayer.setBounds(130, 430, 100, 16);
-		add(lblPlayer);
-		lblPiecesOut = new JLabel("Pecas fora: "+ engine.getCurrentPlayer().getPiecesOut());
-		lblPiecesOut.setBounds(230, 430, 100, 16);
-		add(lblPiecesOut);
 		loadSprites();
 
 		imageWidth = this.getWidth() / 5;
-		imageHeight = (this.getHeight() -30)/ 5;
+		imageHeight = (this.getHeight() - 30) / 5;
 
 	}
 
@@ -69,14 +66,21 @@ public class GameGraphics extends JPanel {
 			blackPiece = ImageIO.read(MainMenu.class.getResource("items/black.png"));
 			whitePiece = ImageIO.read(MainMenu.class.getResource("items/white.png"));
 			background = ImageIO.read(MainMenu.class.getResource("items/background.jpg"));
+			initialBackground = ImageIO.read(MainMenu.class.getResource("items/inicialBackground.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	public void Start() {
+		started = true;
+		lblPlayer = new JLabel("Jogador: " + engine.getCurrentPlayer().getNumber());
+		lblPlayer.setBounds(130, 430, 100, 16);
+		add(lblPlayer);
+		lblPiecesOut = new JLabel("Pecas fora: " + engine.getCurrentPlayer().getPiecesOut());
+		lblPiecesOut.setBounds(230, 430, 100, 16);
+		add(lblPiecesOut);
 		engine = new Game();
-		
 		setVisible(true);
 		requestFocus();
 		repaint();
@@ -86,23 +90,25 @@ public class GameGraphics extends JPanel {
 		super.paintComponent(g);
 
 		g2d = (Graphics2D) g;
-
-		drawAll(g2d);
+		if (started)
+			drawAll(g2d);
+		else
+			drawInitialBackground(g2d);
 	}
 
 	void drawAll(Graphics2D g2d) {
-		lblPlayer.setText("Jogador: "+ engine.getCurrentPlayer().getNumber());
-		lblPiecesOut.setText("Pecas fora: "+ engine.getCurrentPlayer().getPiecesOut());
+		lblPlayer.setText("Jogador: " + engine.getCurrentPlayer().getNumber());
+		lblPiecesOut.setText("Pecas fora: " + engine.getCurrentPlayer().getPiecesOut());
 		mainmenu.getContentPane().removeAll();
 
 		drawBackground(g2d);
 		imageWidth = this.getWidth() / 5;
-		imageHeight = (this.getHeight()-30) / 5;
+		imageHeight = (this.getHeight() - 30) / 5;
 		VDMSeq board = engine.getBoard();
 		int size = board.size();
 		mainmenu.getContentPane().removeAll();
 		mainmenu.showBackground();
-		
+
 		for (int i = 0; i < size; i++) {
 			// criar panels para clicar
 
@@ -134,9 +140,15 @@ public class GameGraphics extends JPanel {
 
 	}
 
+	private void drawInitialBackground(Graphics2D g2d) {
+
+		g2d.drawImage(initialBackground, 0, 0, this.getWidth(), this.getHeight(), 0, 0,
+				initialBackground.getWidth(null), initialBackground.getHeight(null), null);
+	}
+
 	private void drawBackground(Graphics2D g2d) {
 
-		g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight()-30, 0, 0, background.getWidth(null),
+		g2d.drawImage(background, 0, 0, this.getWidth(), this.getHeight() - 30, 0, 0, background.getWidth(null),
 				background.getHeight(null), null);
 	}
 
