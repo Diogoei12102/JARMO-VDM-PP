@@ -14,11 +14,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import Jarmo.Game;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
 import java.awt.Dimension;
-
-import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 
