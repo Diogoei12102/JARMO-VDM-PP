@@ -141,56 +141,57 @@ public isMoveValid : Position * Position ==> bool
 					then (return false;);
 					
 				return true;
-)
-pre pi in set elems getBoard() and pf in set elems board;
+);
+--pre pi in set elems getBoard() and pf in set elems board;
 
 --mover uma peca
 public movePiece : Position * Position ==> bool
 			movePiece(pi, pf) == (
 				if isMoveValid(pi, pf) then (
 								if (pf.getOccupied() = opponent.getNumber()) 
-								then eatPiece();
+								then eatPiece(pf);
 								
 									pi.setOccupied(0);
 									pf.setOccupied(currentPlayer.getNumber());
 						
+						if ((pf.getPosL() = 0 and currentPlayer.getNumber() = 2) 
+				or (pf.getPosL() = 4 and currentPlayer.getNumber() = 1))
+							then currentPlayer.addPiecesFinal();
+						
 						if not ((pf.getPosL() = 0 and currentPlayer.getNumber() = 2 and currentPlayer.getPiecesOut() > 0) 
-						or (pf.getPosL() = 4 and currentPlayer.getNumber() = 1 and currentPlayer.getPiecesOut() > 0))
-							then 
-								(changePlayer();)
+							or (pf.getPosL() = 4 and currentPlayer.getNumber() = 1 and currentPlayer.getPiecesOut() > 0))
+							then (changePlayer();)	
 						else
-							(restore := true;);
+							restore := true;
+			
 						return true;
 		);
 		return false;
 )
 post RESULT = true and pf.getOccupied() = currentPlayer~.getNumber()
-or RESULT = false and pf.getOccupied() <> currentPlayer.getNumber();
+or RESULT = false and (pf.getOccupied() <> currentPlayer.getNumber() or pi.getOccupied() <> currentPlayer.getNumber());
 
 --comer peca do adversario
-public eatPiece : () ==> ()
-	eatPiece() == (
+public eatPiece : Position ==> ()
+	eatPiece(pf) == (
 		opponent.addPiecesOut();
+		if (pf.getPosL() = 0 and currentPlayer.getNumber() = 1) 
+				or (pf.getPosL() = 4 and currentPlayer.getNumber() = 2)
+			then opponent.subPiecesFinal();
 		)
 post opponent.getPiecesOut() < 6;
 
 --repor propria peca em jogo
-public restorePiece : Position ==> bool
+public restorePiece : Position ==> ()
 	restorePiece(p) == (
-		dcl valid : bool := false;
-		if (currentPlayer.getNumber() = 1 and p.getPosL() = 0 and p.getOccupied() = 0) then
-			(p.setOccupied(currentPlayer.getNumber());
-			valid := true;)
-		elseif (currentPlayer.getNumber() = 2 and p.getPosL() = 4 and p.getOccupied() = 0) then
-		 (p.setOccupied(currentPlayer.getNumber());
-		 valid := true;)
+		if (currentPlayer.getNumber() = 1 and p.getPosL() = 0) then
+			(p.setOccupied(currentPlayer.getNumber());)
+		elseif (currentPlayer.getNumber() = 2 and p.getPosL() = 4) then
+		 (p.setOccupied(currentPlayer.getNumber());)
 		else 
-		 return false;
+		 return;
 		currentPlayer.subPiecesOut();
 		changePlayer();
-		restore := false;
-		return valid;
-		
 )
 pre currentPlayer.getPiecesOut() > 0 
 	and p.getOccupied() = 0;
@@ -245,12 +246,8 @@ public countPoints : () ==> ()
 			if board(l).getOccupied() = 1 then
 				cntP1 := cntP1 + 2;
 			);
-		if (currentPlayer.getNumber() = 1) then
-		(currentPlayer.setScore(cntP1);
-		opponent.setScore(cntP2);)
-		else
-		(currentPlayer.setScore(cntP2);
-		opponent.setScore(cntP1););	
+			players(1).setScore(cntP1);
+			players(2).setScore(cntP2);
 )
 pre gameEnds()
 post currentPlayer.getScore() > 0 or opponent.getScore() > 0;
@@ -266,10 +263,5 @@ public turn : Position * Position ==> ()
 		if gameEnds()
 		 then countPoints();
 );
---retornar o valor de restore
-public getRestore : () ==> bool
-        	getRestore() == (
-        	return restore;
-        	);
-	
+			
 end Game

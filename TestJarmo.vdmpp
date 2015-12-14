@@ -57,16 +57,16 @@ public testMove : () ==> ()
 		 
 		 --mover peca jogador 2 para casa vazia
 		  IO`print("TESTE MEXER PECA PARA UMA CASA VAZIA (Jogador 2) \n");
-		  IO`print("peca mexeu:"); assertTrue(g.movePiece(board(24), board(15)));			
+		  IO`print("peca mexeu:"); assertTrue(g.movePiece(board(24), board(17)));			
 			IO`print("posicao inicial mudou:");assertTrue(board(24).getOccupied() = 0);
-			IO`print("posicao final mudou:");assertTrue(board(15).getOccupied() = 2);
+			IO`print("posicao final mudou:");assertTrue(board(17).getOccupied() = 2);
 			IO`print("jogador mudou para 1:");assertTrue(g.getCurrentPlayer().getNumber() = 1);
 			
 			-- posicao inicial vazia
 			IO`print("TENTAR MOVER A PARTIR DE UMA POSICAO VAZIA (Jogador 1) \n");
 			IO`print("peca mexeu:"); assertTrue(g.movePiece(board(1), board(12)));
-			IO`print("posicao inicial nao mudou:");assertTrue(board(1).getOccupied() = 0);
-			IO`print("posicao final nao mudou:");assertTrue(board(12).getOccupied() = 0);	
+			IO`print("posicao inicial nao mudou (esta vazia):");assertTrue(board(1).getOccupied() = 0);
+			IO`print("posicao final nao mudou (= falso):");assertTrue(board(12).getOccupied() = 1);	
 			IO`print("jogador mudou:");assertTrue(g.getCurrentPlayer().getNumber() = 2);-- o jogador nao pode mudar
 			  -- posicao inicial com peca do adversario
 			IO`print("TENTAR MOVER PECA ADVERSARIO (Jogador 1) \n");
@@ -75,13 +75,63 @@ public testMove : () ==> ()
 		  IO`print("posicao final nao mudou:");assertTrue(board(24).getOccupied() = 0);
 		  IO`print("jogador mudou:");assertTrue(g.getCurrentPlayer().getNumber() = 2);-- o jogador nao pode mudar
 		    -- comer peca		  
-		  IO`print("TENTAR COMER PECA ADVERSARIO (Jogador 2) \n");
-		  IO`print("Jogador 1 move peca para posicao vulneravel:");assertTrue(g.movePiece(board(5), board(14)));
-			IO`print("peca mexeu:");assertTrue(g.movePiece(board(25), board(14)));
-			IO`print("posicao inicial mudou:");assertTrue(board(25).getOccupied() = 0);
-		  IO`print("posicao final mudou:");assertTrue(board(14).getOccupied() = 2);
-		  IO`print("jogador mudou:");assertTrue(g.getCurrentPlayer().getNumber() = 1);
-		  IO`print("incrementou piecesOut do jogador 2:"); assertTrue(g.getCurrentPlayer().getPiecesOut() = 1);
+		  	 IO`print("Elementos tabuleiro: \n");
+		for i = 1 to 25 do (
+			IO`print("(");
+			IO`print(g.getBoard()(i).getPosL());
+			IO`print(",");
+			IO`print(g.getBoard()(i).getPosC());
+			IO`print(",");
+			IO`print(g.getBoard()(i).getOccupied());
+			IO`print(")");
+			if g.getBoard()(i).getPosC() = 4
+			 then	IO`print("\n");
+		); 
+		  IO`print("TENTAR COMER PECA ADVERSARIO (Jogador 1) \n");
+		  IO`print("Jogador 2 move peca para posicao vulneravel:");assertTrue(g.movePiece(board(25), board(14)));
+			IO`print("Jogador 1 come peca:");assertTrue(g.movePiece(board(5), board(14)));
+			IO`print("posicao inicial mudou:");assertTrue(board(5).getOccupied() = 0);
+		  IO`print("posicao final mudou:");assertTrue(board(14).getOccupied() = 1);
+		  IO`print("jogador mudou:");assertTrue(g.getCurrentPlayer().getNumber() = 2);
+		  IO`print("incrementou piecesOut do jogador 2: "); assertEqual(1, g.getCurrentPlayer().getPiecesOut());
+		
+		  IO`print("TENTAR COMER PECA ADVERSARIO NA SUA LINHA FINAL (Jogador 2) \n");
+		  g.changePlayer();
+		  IO`print("Jogador 1 move peca para linha final:");assertTrue(g.movePiece(board(14), board(25)));
+		  IO`print("incrementou piecesFinal do jogador 1: "); assertEqual(1, g.getPlayers()(1).getPiecesFinal());
+			IO`print("Jogador 2 move peca:");assertTrue(g.movePiece(board(23), board(14)));
+			IO`print("Jogador 1 move peca:");assertTrue(g.movePiece(board(3), board(12)));
+			IO`print("Jogador 2 come peca de Jogador 1 na linha final:");assertTrue(g.movePiece(board(14), board(25)));
+			IO`print("posicao inicial mudou:");assertTrue(board(14).getOccupied() = 0);
+		  IO`print("posicao final mudou:");assertTrue(board(25).getOccupied() = 2);
+		  IO`print("incrementou piecesOut do jogador 1: "); assertEqual(1, g.getPlayers()(1).getPiecesOut());
+		  IO`print("decrementou piecesFinal do jogador 1: "); assertEqual(0, g.getPlayers()(1).getPiecesFinal());
+		
+		   IO`print("TENTAR COMER PECA ADVERSARIO NA SUA LINHA FINAL (Jogador 1) \n");
+		   IO`print("Jogador 1 move peca:");assertTrue(g.movePiece(board(2), board(11)));
+		  IO`print("Jogador 2 move peca para posicao 14:");assertTrue(g.movePiece(board(25), board(14)));
+		  IO`print("Jogador 1 move peca:");assertTrue(g.movePiece(board(11), board(2)));
+			IO`print("Jogador 2 move peca para linha final:");assertTrue(g.movePiece(board(14), board(5)));
+			IO`print("incrementou piecesFinal do jogador 2: "); assertEqual(1, g.getPlayers()(2).getPiecesFinal());
+			  IO`print("Elementos tabuleiro: \n");
+		for i = 1 to 25 do (
+			IO`print("(");
+			IO`print(g.getBoard()(i).getPosL());
+			IO`print(",");
+			IO`print(g.getBoard()(i).getPosC());
+			IO`print(",");
+			IO`print(g.getBoard()(i).getOccupied());
+			IO`print(")");
+			if g.getBoard()(i).getPosC() = 4
+			 then	IO`print("\n");
+		);
+			IO`print("Jogador 2 restaura peca na posicao 25..\n");
+			g.restorePiece(board(25));
+			IO`print("Jogador 1 come peca de Jogador 2 na linha final:");assertTrue(g.movePiece(board(8), board(5)));
+			IO`print("posicao inicial mudou:");assertTrue(board(8).getOccupied() = 0);
+		  IO`print("posicao final mudou:");assertTrue(board(5).getOccupied() = 1);
+		  IO`print("incrementou piecesOut do jogador 2: "); assertEqual(1, g.getPlayers()(1).getPiecesOut());
+		  IO`print("decrementou piecesFinal do jogador 2: "); assertEqual(0, g.getPlayers()(1).getPiecesFinal());
 				
 );
 
@@ -284,10 +334,11 @@ public testRestorePiece : () ==> ()
 			dcl p21: Position := new Position(4,0,2);
 			dcl p22: Position := new Position(4,1,2);
 			dcl p23: Position := new Position(4,2,2);
-			dcl p24: Position := new Position(4,3,2);
+			dcl p24: Position := new Position(4,3,0);
 			dcl p25: Position := new Position(4,4,0);
 			
 			p14.addValidMoves([p25]);
+			
 			g.getCurrentPlayer().addPiecesOut();
 			
 			g.setBoard([p1, p2, p3, p4, p5, 
@@ -296,7 +347,7 @@ public testRestorePiece : () ==> ()
 								p16, p17, p18, p19, p20, 
 								p21, p22, p23, p24, p25]);
 			
-		IO`print("\nVERIFICAR RESTAURAR PECA\n");
+		IO`print("\nVERIFICAR RESTAURAR PECA (Jogador 1)\n");
 							
 		IO`print("Elementos tabuleiro: \n");
 		for i = 1 to 25 do (
@@ -313,14 +364,52 @@ public testRestorePiece : () ==> ()
 		
 		IO`print("Jogador 1 move peca para linha final: ");
 		assertTrue(g.movePiece(p14,p25)); --jogada do Jogador 1 de uma peca para a linha final
-		
-		
-		IO`print("Pecas fora do tabuleiro do Jogador 1 (Jogador 1 tem de ter uma peca fora do tabuleiro para a poder restaurar): ");
+			
+		IO`print("Pecas fora do tabuleiro do Jogador 1 (Jogador 1 tem de ter pelo menos uma peca fora do tabuleiro para a poder restaurar): ");
 		assertEqual(1, g.getPlayers()(1).getPiecesOut()); --
 		
-		
+		g.restorePiece(p1);
 		IO`print("Jogador 1 restaura peca na posicao 1: ");
-		assertTrue(g.restorePiece(p1));
+		assertEqual(g.getBoard()(1).getOccupied(), 1); --
+		assertEqual(g.getPlayers()(1).getPiecesOut(), 0);
+		
+		IO`print("\nVERIFICAR RESTAURAR PECA (Jogador 2)\n");
+		
+			p17.addValidMoves([p8]);
+			p1.addValidMoves([p12]);
+			p8.addValidMoves([p5]);
+			
+			g.getCurrentPlayer().addPiecesOut();
+			
+		IO`print("Elementos tabuleiro: \n");
+		for i = 1 to 25 do (
+			IO`print("(");
+			IO`print(g.getBoard()(i).getPosL());
+			IO`print(",");
+			IO`print(g.getBoard()(i).getPosC());
+			IO`print(",");
+			IO`print(g.getBoard()(i).getOccupied());
+			IO`print(")");
+			if g.getBoard()(i).getPosC() = 4
+			 then	IO`print("\n");
+		);
+		
+		IO`print("Jogador 2 move peca para posicao 8: ");
+		assertTrue(g.movePiece(p17,p8)); 
+		
+		IO`print("Jogador 1 move peca");
+		assertTrue(g.movePiece(p1,p12)); 
+		
+		IO`print("Jogador 2 move peca");
+		assertTrue(g.movePiece(p8,p5)); 
+		
+		IO`print("Pecas fora do tabuleiro do Jogador 2 (Jogador 2 tem de ter pelo menos uma peca fora do tabuleiro para a poder restaurar): ");
+		assertEqual(1, g.getPlayers()(2).getPiecesOut());
+		
+		g.restorePiece(p24);
+		IO`print("Jogador 2 restaura peca na posicao 24: ");
+		assertEqual(g.getBoard()(24).getOccupied(), 2); --
+		assertEqual(g.getPlayers()(2).getPiecesOut(), 0);
 				
 );
 

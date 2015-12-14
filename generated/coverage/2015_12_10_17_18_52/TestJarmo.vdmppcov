@@ -1,0 +1,74 @@
+class TestJarmo is subclass of Tests
+types
+
+operations
+/***** USE CASE SCENARIOS ******/
+public testBoard : () ==> () 
+			testBoard() == (
+						dcl g: Game := new Game();
+						
+						dcl board: seq of Position := g.getBoard();
+						
+						for i = 1 to 5 do (
+							assertTrue(board(i).getOccupied() = 1);
+						);
+						
+						for i = 21 to 25 do (
+							assertTrue(board(i).getOccupied() = 2);
+						);
+						
+						for i = 6 to 20 do (
+							assertTrue(board(i).getOccupied() = 0);
+						);
+						
+				);
+				
+public testMove : () ==> ()
+			testMove() == (
+			
+			--movimento para casa vazia
+			--comer peca
+			--nao mover a sua peca
+			--movimento para uma casa ocupada por uma peca do mesmo jogador
+			dcl g: Game := new Game();
+			
+			dcl board: seq of Position := g.getBoard();
+			
+			-- mover para casa vazia
+			
+			assertTrue(g.movePiece(board(1), board(8)));
+			IO`print("Posicao p1: ");
+			IO`print(g.getBoard()(1).getOccupied());
+			assertTrue(board(1).getOccupied() = 0);
+
+			assertTrue(board(8).getOccupied() = 1);	
+			
+		assertTrue(g.movePiece(board(24), board(15)));
+						
+			assertTrue(board(24).getOccupied() = 0);
+			assertTrue(board(15).getOccupied() = 2);
+			
+			--nao mover a sua peca - primeira casa - board(1) - esta vazia
+			
+				-- posicao inicial vazia
+			assertTrue(g.movePiece(board(1), board(12)));
+			
+			assertTrue(board(1).getOccupied() = 0);
+			assertTrue(board(12).getOccupied() = 0);	
+			
+			  -- posicao inicial com peca do adversario
+			assertTrue(g.movePiece(board(15), board(24)));
+			
+			assertTrue(board(15).getOccupied() = 2);
+			assertTrue(board(24).getOccupied() = 0);
+				
+);
+
+public static main: () ==> ()
+                main() ==
+                (
+                    new TestJarmo().testBoard();
+                        
+                );
+                
+end TestJarmo

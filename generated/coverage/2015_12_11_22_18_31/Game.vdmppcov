@@ -1,0 +1,249 @@
+class Game
+types
+public Board = seq of Position;
+values
+
+instance variables
+private board: Board;
+private currentPlayer: Player;
+private opponent: Player;
+private players: seq of Player;
+
+--invariants
+inv len players = 2;
+inv len board = 25
+
+operations
+public Game: ()==> Game
+	Game() == (
+			--dcl p: Position ;
+			dcl p1: Position := new Position(0,0,1);
+			dcl p2: Position := new Position(0,1,1);
+			dcl p3: Position := new Position(0,2,1);
+			dcl p4: Position := new Position(0,3,1);
+			dcl p5: Position := new Position(0,4,1);
+			dcl p6: Position := new Position(1,0,0);
+			dcl p7: Position := new Position(1,1,0);
+			dcl p8: Position := new Position(1,2,0);
+			dcl p9: Position := new Position(1,3,0);
+			dcl p10: Position := new Position(1,4,0);
+			dcl p11: Position := new Position(2,0,0);
+			dcl p12: Position := new Position(2,1,0);
+			dcl p13: Position := new Position(2,2,0);
+			dcl p14: Position := new Position(2,3,0);
+			dcl p15: Position := new Position(2,4,0);
+			dcl p16: Position := new Position(3,0,0);
+			dcl p17: Position := new Position(3,1,0);
+			dcl p18: Position := new Position(3,2,0);
+			dcl p19: Position := new Position(3,3,0);
+			dcl p20: Position := new Position(3,4,0);
+			dcl p21: Position := new Position(4,0,2);
+			dcl p22: Position := new Position(4,1,2);
+			dcl p23: Position := new Position(4,2,2);
+			dcl p24: Position := new Position(4,3,2);
+			dcl p25: Position := new Position(4,4,2);
+			
+			p1.addValidMoves([p8, p12]);
+			p2.addValidMoves([p9, p11]);
+			p3.addValidMoves([p6, p10, p14]);
+			p4.addValidMoves([p7, p13]);
+			p5.addValidMoves([p8, p14]);
+			p6.addValidMoves([p3, p13]);
+			p7.addValidMoves([p4, p8, p12, p18]);
+			p8.addValidMoves([p1, p5, p7, p9, p15]);
+			p9.addValidMoves([p2, p8, p12, p14]);
+			p10.addValidMoves([p3, p19]);
+			p11.addValidMoves([p2, p22]);
+			p12.addValidMoves([p1, p6, p9, p17, p21, p22]);
+			p13.addValidMoves([p4, p6, p16, p20]);
+			p14.addValidMoves([p3, p5, p9, p17, p19, p25]);
+			p15.addValidMoves([p8, p24]);
+			p16.addValidMoves([p13, p23]);
+			p17.addValidMoves([p12, p14, p18, p24]);
+			p18.addValidMoves([p7, p17, p19, p21, p25]);
+			p19.addValidMoves([p10, p14, p18, p22]);
+			p20.addValidMoves([p6, p23]);
+			p21.addValidMoves([p12, p18]);
+			p22.addValidMoves([p11, p19]);
+			p23.addValidMoves([p12, p16, p20]);
+			p24.addValidMoves([p15, p17]);
+			p25.addValidMoves([p14, p18]);
+			
+			board := [p1, p2, p3, p4, p5, 
+								p6, p7, p8, p9, p10, 
+								p11, p12, p13, p14, p15, 
+								p16, p17, p18, p19, p20, 
+								p21, p22, p23, p24, p25];
+				
+			--selecciona Jogador 1 para comecar				
+			currentPlayer := new Player(1);
+			--selecciona Jogador 2 como seu oponente
+			opponent := new Player(2);
+			--guarda os dois jogadores (1 e 2)
+			players := [currentPlayer, opponent];
+		
+		return self;
+)
+post len board = 25 
+		and currentPlayer.getNumber() <> opponent.getNumber() 
+			and players = [currentPlayer,opponent]; 
+	
+pure public getBoard : () ==>  Board
+        	getBoard() == (
+        	return board;
+        	);
+        				
+public setBoard : Board ==> ()
+        	setBoard(b) == (
+        	board := b;
+        	)
+pre len b = 25;
+        	
+public getPlayers : () ==>  seq of Player
+        	getPlayers() == (
+        	return players;
+        	);
+
+--troca de jogador     	       		      	
+public changePlayer : () ==> ()
+				changePlayer() == (
+				if currentPlayer.getNumber() = 1 then
+					(currentPlayer := players(2);
+					opponent := players(1);)
+				else 
+				(currentPlayer := players(1);
+					opponent := players(2);)
+)
+pre currentPlayer <> opponent
+post currentPlayer~ <> currentPlayer;
+
+public getCurrentPlayer : () ==> Player
+        	getCurrentPlayer() == (
+        	return currentPlayer;
+        	);
+        	
+public isMoveValid : Position * Position ==> bool
+			isMoveValid(pi, pf) == (
+				
+				if (pi.getOccupied() <> currentPlayer.getNumber() 
+						or pf.getOccupied() = currentPlayer.getNumber() 
+						or pf not in set elems pi.getValidMoves() or ((pi.getPosL() = 4 and currentPlayer.getNumber() = 1) or 
+						(pi.getPosL() = 0 and currentPlayer.getNumber() = 2))) 
+					then (return false;);
+					
+				return true;
+)
+pre pi in set elems getBoard() and pf in set elems board;
+
+public movePiece : Position * Position ==> bool
+			movePiece(pi, pf) == (
+				if isMoveValid(pi, pf) then (
+								if (pf.getOccupied() = opponent.getNumber()) 
+								then eatPiece();
+								
+									pi.setOccupied(0);
+									pf.setOccupied(currentPlayer.getNumber());
+						
+						if not ((pf.getPosL() = 0 and currentPlayer.getNumber() = 2 and currentPlayer.getPiecesOut() > 0) 
+						or (pf.getPosL() = 4 and currentPlayer.getNumber() = 1 and currentPlayer.getPiecesOut() > 0))
+							then 
+								changePlayer();
+						return true;
+		);
+		return false;
+);
+
+public eatPiece : () ==> ()
+	eatPiece() == (
+		opponent.addPiecesOut();
+		)
+post opponent.getPiecesOut() < 6;
+
+public restorePiece : Position ==> ()
+	restorePiece(p) == (
+		if (currentPlayer.getNumber() = 1 and p.getPosL() = 0) then
+			(p.setOccupied(currentPlayer.getNumber());)
+		elseif (currentPlayer.getNumber() = 2 and p.getPosL() = 4) then
+		 (p.setOccupied(currentPlayer.getNumber());)
+		else 
+		 return;
+		currentPlayer.subPiecesOut();
+		changePlayer();
+)
+pre currentPlayer.getPiecesOut() > 0 
+	and p.getOccupied() = 0;
+		
+pure public gameEnds : () ==> bool 
+	gameEnds() == (
+		dcl cntP2 : nat := 0;
+		dcl cntP1 : nat := 0;
+		for l = 1 to 5   do (
+			if board(l).getOccupied() <> 2 then
+			(
+				cntP2 := cntP2 + 1;
+			)
+		);
+		for l = 21 to 25 do (
+			if board(l).getOccupied() <> 1 then
+				cntP1 := cntP1 + 1;
+			);
+		if (currentPlayer.getNumber() = 1 and currentPlayer.getPiecesOut() = cntP1) then
+			(return true);
+		if (currentPlayer.getNumber() = 2 and currentPlayer.getPiecesOut() = cntP2) then
+			(return true);
+		if (currentPlayer.getPiecesOut() = 5 or opponent.getPiecesOut() = 5)
+			then (return true;);
+		return false;
+);
+
+public countPoints : () ==> () 
+	countPoints() == (
+		dcl cntP2 : nat := 0;
+		dcl cntP1 : nat := 0;
+		for l = 1 to 5   do (
+			if board(l).getOccupied() = 2 then
+			(
+				cntP2 := cntP2 + 2;
+			)
+		);
+		for l = 6 to 20 do (
+			if board(l).getOccupied() = 1 then
+				(cntP1 := cntP1 + 1;)
+			elseif board(l).getOccupied() = 2 then
+				cntP2 := cntP2 + 1;
+			);
+		for l = 21 to 25 do (
+			if board(l).getOccupied() = 1 then
+				cntP1 := cntP1 + 2;
+			);
+		if (currentPlayer.getNumber() = 1) then
+		(currentPlayer.setScore(cntP1);
+		opponent.setScore(cntP2);)
+		else
+		(currentPlayer.setScore(cntP2);
+		opponent.setScore(cntP1););	
+)
+pre gameEnds()
+post currentPlayer.getScore() > 0 or opponent.getScore() > 0;
+
+--jogada sem restorePiece() - escolha arbitraria de um jogador - sera implementada na classe de testes
+public turn : Position * Position ==> () 
+	turn(pi, pf) == (
+		if movePiece(pi,pf)
+			then 
+				changePlayer();
+		if gameEnds()
+		 then countPoints();
+);
+		
+--The game ends, when any one player has brought all of their remaining archers on the board onto the enemy player's first row. DONE
+--The first player do so will count two points for every archer on the enemy player's first row. 
+--The other player also counts two points for every archer on the enemy player's first row, 
+--but only one point for every archer remaining on the rest of the board. 
+--The player with the most points wins.		
+			
+functions
+        	
+traces
+-- TODO Define Combinatorial Test Traces here
+end Game
