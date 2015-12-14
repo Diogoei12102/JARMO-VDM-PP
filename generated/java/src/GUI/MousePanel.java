@@ -53,24 +53,23 @@ public class MousePanel extends JPanel {
 						game.drawAll(game.g2d);
 						game.repaint();
 
-						if (engine.getRestore()) {
-							JOptionPane.showMessageDialog(null,
-									"O jogador " + engine.getCurrentPlayer().getNumber() + " tem de repor uma peca");
-						}
-						if (engine.gameEnds()){
+						if (engine.gameEnds()) {
 							engine.countPoints();
-							Player p1= (Player) engine.getPlayers().get(0);
+							Player p1 = (Player) engine.getPlayers().get(0);
 							Player p2 = (Player) engine.getPlayers().get(1);
 							int pointsP1 = p1.getScore().intValue();
 							int pointsP2 = p2.getScore().intValue();
-							if(pointsP1 > pointsP2){
-								JOptionPane.showMessageDialog(restart(),
-										"O jogador 1 ganhou com "+ pointsP1+" pontos e o jogador 2 com "+ pointsP2 +" pontos");
-								
-							}
-							else JOptionPane.showMessageDialog(restart(),
-									"O jogador 2 ganhou com "+ pointsP2+" pontos e o jogador 1 com "+ pointsP1 +" pontos");
-							
+							if (pointsP1 > pointsP2) {
+								JOptionPane.showMessageDialog(restart(), "O jogador 1 ganhou com " + pointsP1
+										+ " pontos e o jogador 2 com " + pointsP2 + " pontos");
+
+							} else
+								JOptionPane.showMessageDialog(restart(), "O jogador 2 ganhou com " + pointsP2
+										+ " pontos e o jogador 1 com " + pointsP1 + " pontos");
+
+						} else if (engine.getRestore()) {
+							JOptionPane.showMessageDialog(null,
+									"O jogador " + engine.getCurrentPlayer().getNumber() + " tem de repor uma peca");
 						}
 
 					} else {

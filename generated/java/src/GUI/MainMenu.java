@@ -73,6 +73,7 @@ public class MainMenu extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if ((JOptionPane.showConfirmDialog(rootPane, "Are you sure?",
 						"Play", JOptionPane.YES_NO_OPTION)) == JOptionPane.YES_OPTION) {
+					btnStart.setText("Restart");
 					game.Start();
 
 				}
@@ -112,7 +113,7 @@ public class MainMenu extends JFrame {
 
 
 	public void restart() {
-		
+		btnStart.setText("Start");
 		getContentPane().removeAll();
 		getContentPane().add(buttonpanel);
 		getContentPane().add(game);
